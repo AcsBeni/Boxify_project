@@ -1,1 +1,49 @@
-<p>login works!</p>
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="logo">
+      <span class="logo-icon"><img id="icon" src="./favicon.ico" alt=""></span>
+      <span class="logo-text">Boxify</span>
+    </div>
+
+    <h2 class="title">Bejelentkezés</h2>
+    <p class="subtitle mb-5">Jelentkezz be a Boxify fiókodba</p>
+
+    
+      <div class="p-fluid">
+
+        <div class="p-field mb-4 ">
+            <p-floatLabel>
+                <input id="email" type="text" pInputText [(ngModel)]="email" name="email" required />
+                <label for="email">Email cím</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="p-field password-field mb-2">
+            <p-floatLabel>
+                <p-password
+                id="password"
+                [(ngModel)]="password"
+                name="password"
+                [toggleMask]="true"
+                placeholder="Jelszó"
+                required>
+                </p-password>
+                <label for="password">Password</label>
+            </p-floatLabel>
+          
+        </div>
+
+        <div class="p-field remember-me">
+          <p-checkbox [(ngModel)]="rememberMe" name="rememberMe" binary="true"></p-checkbox>
+          <label>Jegyezzen meg</label>
+        </div>
+        <p-button label="Login" label="Bejelentkezés"  class="login-button" (click) = "login()" />
+      </div>
+    
+
+    <div class="extra-links">
+      <a href="/forgot_password" class="forgot-password">Elfelejtettette jelszavát?</a>
+      <span>Még nincs fiókod? <a href="/registration" class="register-link">Regisztrálok</a></span>
+    </div>
+</div>
+</div>

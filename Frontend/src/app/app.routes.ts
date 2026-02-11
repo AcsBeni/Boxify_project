@@ -8,6 +8,7 @@ import { ItemsComponent } from './components/items/items.component';
 import { PackingComponent } from './components/packing/packing.component';
 import { SearchComponent } from './components/search/search.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 
 export const routes: Routes = [
 
@@ -50,5 +51,7 @@ export const routes: Routes = [
 
         { path: 'dashboard', component: DashboardComponent},
     
+    //Not found------------------------------------------------------
         
+        {path: '**', component:NotfoundComponent},
 ];
