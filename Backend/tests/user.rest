@@ -1,7 +1,6 @@
 @host = http://localhost
 @port = 4000
 @url = {{host}}:{{port}}
-@authToken = {{login.response.body.token}}
 
 
 ### get all Users

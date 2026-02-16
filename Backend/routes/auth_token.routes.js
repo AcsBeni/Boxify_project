@@ -8,7 +8,7 @@ const mailer = require('../service/mail.service');
 /**
  * REGISTER
  */
-router.post('/register', async (req, res) => {
+router.post('/registration', async (req, res) => {
   const { name, email, password, confirm } = req.body;
 
   if (password !== confirm) {
@@ -22,24 +22,28 @@ router.post('/register', async (req, res) => {
 /**
  * LOGIN
  */
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+router.post('/login', async (req, res)=>{
+    try{
+     const {email, password, } = req.body
 
-  const user = await User.scope('withPassword').findOne({ where: { email } });
-  if (!user || !(await user.comparePassword(password))) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
+    const user = await User.scope("withPassword").findOne({ where: {email}})
+    if(!user) return res.status(401).json({message: "Nincs ilyen felhasználó"})
+    if(!user.status) return res.status(403).json({message: 'this User is banned'})
+    
+    const ok = await user.comparePassword(password);
 
-  if (!user.status) {
-    return res.status(403).json({ message: 'User banned' });
-  }
-
-  await user.update({ lastLoginAt: new Date() });
-
-  res.json({
-    token: generateToken(user)
-  });
-});
+    if(!ok) return res.status(401).json({message: "Jelszó nem jó"})
+    
+    await user.update({lastLoginAt: new Date()})
+    //token
+    const token = await generateToken(user)
+    //siker
+    res.status(200).json({token})
+   }
+   catch(e){
+    res.status(500).json({message: 'Login failed!', error: e.message});
+   }
+})
 
 /**
  * FORGOT PASSWORD
