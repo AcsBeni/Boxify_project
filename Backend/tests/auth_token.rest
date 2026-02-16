@@ -1,0 +1,29 @@
+@host = http://localhost
+@port = 4000
+@url = {{host}}:{{port}}
+@authToken = {{login.response.body.token}}
+
+
+
+### auth login
+
+# @name login
+
+POST  {{url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "fafga@gmail.com",
+    "password": "123"
+}
+
+### register auth
+POST  {{url}}/auth/registration
+Content-Type: application/json
+
+{
+    "name": "babI",
+    "email": "fafgaa@gmail.com",
+    "password": "123",
+    "confirm": "123"
+}

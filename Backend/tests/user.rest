@@ -1,0 +1,49 @@
+@host = http://localhost
+@port = 4000
+@url = {{host}}:{{port}}
+
+
+### get all Users
+GET {{url}}/users
+Content-Type: application/json
+
+### user login
+
+# @name login
+
+POST  {{url}}/users/login
+Content-Type: application/json
+
+{
+    "email": "fafga@gmail.com",
+    "password": "123"
+}
+
+
+
+### get Users by id
+GET {{url}}/users/33593ee2-33fb-4fdc-b107-7479731b3de1
+Content-Type: application/json
+
+### register users
+POST  {{url}}/users/registration
+Content-Type: application/json
+
+{
+    "name": "babI",
+    "email": "fafgaa@gmail.com",
+    "password": "123",
+    "confirm": "123"
+}
+
+### Update users
+PATCH  {{url}}/users/33593ee2-33fb-4fdc-b107-7479731b3de1
+Content-Type: application/json
+
+{
+    "password": "1234"
+}
+
+### Delete users
+DELETE {{url}}/users/e7fbc449-3abf-40b5-b04a-1f0ec708a666
+Content-Type: application/json

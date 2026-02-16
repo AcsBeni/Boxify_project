@@ -56,41 +56,6 @@ router.get('/:field/:op/:value',authenticate, async (req, res)=>{
     }
 })
 
-router.post('/registration', async (req, res)=>{
-   try{
-     const {name, email, password, confirm} = req.body
-
-    const user = await User.create({name, email, password})
-    res.status(201).json(user)
-   }
-   catch(e){
-    res.status(500).json({message: 'Registration failed!', error: e.message});
-   }
-});
-//user login
-router.post('/login', async (req, res)=>{
-    try{
-     const {email, password, } = req.body
-
-    const user = await User.scope("withPassword").findOne({ where: {email}})
-    if(!user) return res.status(401).json({message: "Nincs ilyen felhasználó"})
-    if(!user.status) return res.status(403).json({message: 'this User is banned'})
-    
-    const ok = await user.comparePassword(password);
-
-    if(!ok) return res.status(401).json({message: "Jelszó nem jó"})
-    
-    await user.update({last: new Date()})
-    //token
-    const token = await generateToken(user)
-    //siker
-    res.status(200).json({token})
-   }
-   catch(e){
-    res.status(500).json({message: 'Login failed!', error: e.message});
-   }
-})
-
 router.patch('/:id',authenticate, async (req, res) => {
     try{
         const id = req.params.id;

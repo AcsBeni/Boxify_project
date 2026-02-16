@@ -12,11 +12,11 @@ module.exports = (sequelize)=>{
                 defaultValue: DataTypes.UUIDV4
             },
             name: {
-                type: DataTypes.STRING(100),
+                type: DataTypes.STRING(64),
                 allowNull: false,
             },
             email: {
-                type: DataTypes.STRING(100),
+                type: DataTypes.STRING(64),
                 allowNull: false,
                 unique:true
             },
