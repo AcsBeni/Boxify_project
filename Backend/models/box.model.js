@@ -1,5 +1,4 @@
 const { DataTypes, UUID } = require('sequelize');
-const bcrypt = require('bcrypt')
 const {v4: uuidv4} = require('uuid')
 
 module.exports = (sequelize)=>{
@@ -13,7 +12,8 @@ module.exports = (sequelize)=>{
             },
             userId: {
                 type: DataTypes.UUID,
-                allowNull: false
+                allowNull: false,
+                unique: true
             },
             code: {
                 type: DataTypes.STRING(100),
@@ -35,6 +35,10 @@ module.exports = (sequelize)=>{
             heightCm:{
                 type: DataTypes.DECIMAL,
                 allowNull: false,
+            },
+            maxWeightKg:{
+                type: DataTypes.DECIMAL,
+                allowNull: false
             },
             location: {
                 type: DataTypes.STRING(100),
