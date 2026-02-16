@@ -54,6 +54,10 @@ module.exports = (sequelize)=>{
         },
         {
             timestamps: true,
+            indexes: [
+                { fields: ['name'] },
+                { fields: ['userId'] }
+            ]
         }
         
     );

@@ -1,0 +1,42 @@
+@host = http://localhost
+@port = 4000
+@url = {{host}}:{{port}}
+
+
+### get all items
+GET {{url}}/items
+Content-Type: application/json
+
+
+### get one item
+GET {{url}}/items/33593ee2-33fb-4fdc-b107-7479731b3de1
+Content-Type: application/json
+
+### get one item
+GET {{url}}/items/3667ff51-9701-4ac6-984e-4ecaccf60c92
+Content-Type: application/json
+
+
+### Post item
+POST  {{url}}/items
+Content-Type: application/json
+
+{
+    "userId": "e8fbb0be-78e6-4400-830d-0f1f6f21f274",
+    "start": "14:00",
+    "end": "20:20"
+    
+}
+
+### Update item
+PATCH  {{url}}/items/98abc7dc-a645-4358-9df7-c7f7b83ee398
+Content-Type: application/json
+
+{
+    "start": "15:00",
+    "end": "20:20"
+}
+
+### Delete item
+DELETE {{url}}/items/98abc7dc-a645-4358-9df7-c7f7b83ee398
+Content-Type: application/json
