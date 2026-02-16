@@ -15,6 +15,7 @@ const sequelize = new Sequelize(
 );
 
 const User = require('./user.model')(sequelize)
+const Box = require('./box.model')(sequelize)
 
 
 const operatorMap = {
@@ -28,4 +29,4 @@ const operatorMap = {
 
 }
 
-module.exports = {sequelize, User, operatorMap}
+module.exports = {sequelize, User,Box, operatorMap}
