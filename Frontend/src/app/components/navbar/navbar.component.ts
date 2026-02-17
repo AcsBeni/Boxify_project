@@ -5,9 +5,9 @@ import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
 import { CommonModule } from '@angular/common';
-import { Item } from '../../interfaces/item';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { Menuitem } from '../../interfaces/menuitem';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
         private auth: AuthService,
         private router: Router
     ){}
-    items: Item[] | undefined;
+    items: Menuitem[] | undefined;
 
     ngOnInit() {
         this.setupMenu()

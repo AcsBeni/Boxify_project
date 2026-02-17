@@ -1,5 +1,12 @@
 export interface Item {
-    label?: string;
-    icon?: string;
-    routerLink?: string | any[];
+  id: string;
+  userId: string;
+  name: string;
+  description?: string;
+  lengthCm: number;
+  widthCm: number;
+  heightCm: number;
+  maxWeightKg: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }
