@@ -21,7 +21,7 @@ module.exports = (sequelize)=>{
                 unique:true
             },
             password:{
-                type: DataTypes.STRING(64),
+                type: DataTypes.STRING(255),
                 allowNull: false
             },
             role:{

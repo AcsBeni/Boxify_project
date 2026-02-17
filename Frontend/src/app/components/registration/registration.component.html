@@ -1,1 +1,98 @@
-<p>registration works!</p>
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="logo">
+      <span class="logo-icon">
+        <img id="icon" src="./favicon.ico" alt="" />
+      </span>
+      <span class="logo-text">Boxify</span>
+    </div>
+
+    <h2 class="title">Regisztráció</h2>
+    <p class="subtitle mb-5">Hozza létre Boxify fiókját</p>
+
+    <div class="p-fluid">
+
+      <!-- NAME -->
+      <div class="p-field mb-4">
+        <p-floatLabel>
+          <input
+            id="name"
+            type="text"
+            pInputText
+            [(ngModel)]="name"
+            required
+          />
+          <label for="name">Teljes név</label>
+        </p-floatLabel>
+      </div>
+
+      <!-- EMAIL -->
+      <div class="p-field mb-4">
+        <p-floatLabel>
+          <input
+            id="email"
+            type="email"
+            pInputText
+            [(ngModel)]="email"
+            required
+          />
+          <label for="email">Email cím</label>
+        </p-floatLabel>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="p-field password-field mb-4">
+        <p-floatLabel>
+          <p-password
+            id="password"
+            [(ngModel)]="password"
+            [toggleMask]="true"
+            required
+          ></p-password>
+          <label for="password">Jelszó</label>
+        </p-floatLabel>
+      </div>
+
+      <!-- CONFIRM PASSWORD -->
+      <div class="p-field password-field mb-4">
+        <p-floatLabel>
+          <p-password
+            id="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            [feedback]="false"
+            [toggleMask]="true"
+            required
+          ></p-password>
+          <label for="confirmPassword">Jelszó megerősítése</label>
+        </p-floatLabel>
+      </div>
+
+      <!-- TERMS -->
+      <div class="p-field remember-me mb-4">
+        <p-checkbox
+          [(ngModel)]="acceptTerms"
+          binary="true"
+        ></p-checkbox>
+        <label>Elfogadom a felhasználási feltételeket</label>
+      </div>
+
+      <!-- BUTTON -->
+      <p-button
+        label="Regisztráció"
+        class="login-button"
+        (click)="register()"
+      ></p-button>
+
+    </div>
+
+    <!-- LINKS -->
+    <div class="extra-links">
+      <span>
+        Már van fiókja?
+        <a routerLink="/login" class="register-link">
+          Bejelentkezés
+        </a>
+      </span>
+    </div>
+  </div>
+</div>

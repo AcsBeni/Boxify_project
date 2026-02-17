@@ -23,26 +23,33 @@ router.post('/registration', async (req, res) => {
  * LOGIN
  */
 router.post('/login', async (req, res)=>{
-    try{
-     const {email, password, } = req.body
+    try {
+    const { email, password } = req.body;
 
-    const user = await User.scope("withPassword").findOne({ where: {email}})
-    if(!user) return res.status(401).json({message: "Nincs ilyen felhasználó"})
-    if(!user.status) return res.status(403).json({message: 'this User is banned'})
-    
-    const ok = await user.comparePassword(password);
+    const user = await User.scope('withPassword').findOne({
+      where: { email }
+    });
 
-    if(!ok) return res.status(401).json({message: "Jelszó nem jó"})
-    
-    await user.update({lastLoginAt: new Date()})
-    //token
-    const token = await generateToken(user)
-    //siker
-    res.status(200).json({token})
-   }
-   catch(e){
-    res.status(500).json({message: 'Login failed!', error: e.message});
-   }
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    await user.update({ lastLoginAt: new Date() });
+
+    const token = generateToken(user);
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+    } catch {
+      res.status(500).json({ error: 'Login failed' });
+  }
 })
 
 /**

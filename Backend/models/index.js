@@ -28,30 +28,40 @@ User.hasMany(Box, {
   as: 'boxes',
   onDelete: 'CASCADE'
 });
+User.hasMany(Item, {
+  foreignKey: 'userId',
+  as: 'items',
+  onDelete: 'CASCADE'
+});
+User.hasMany(AuthToken, {
+  foreignKey: 'userId',
+  as: 'auth_tokens',
+  onDelete: 'CASCADE'
+});
     //USER
     Box.belongsTo(User, {
     foreignKey: 'userId',
-    as: 'user'
+    as: 'users'
     });
 
     Item.belongsTo(User, {
     foreignKey: 'userId',
-    as: 'user'
+    as: 'users'
     });
     AuthToken.belongsTo(User, {
     foreignKey: 'userId',
-    as: 'user'
+    as: 'users'
     });
     //BOX
     Box_Item.belongsTo(Box, {
     foreignKey: 'boxId',
-    as: 'box'
+    as: 'boxes'
     });
 
     //Items
-    Item.belongsTo(Item, {
+    Box_Item.belongsTo(Item, {
     foreignKey: 'itemId',
-    as: 'item'
+    as: 'items'
     });
 
 const operatorMap = {

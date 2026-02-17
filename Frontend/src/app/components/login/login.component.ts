@@ -7,6 +7,7 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { RouterLink } from '@angular/router';
 
 
 
@@ -15,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
   selector: 'app-login',
   standalone: true,
   imports: [
+    RouterLink,
     InputTextModule,
     FormsModule,
     FloatLabelModule,
