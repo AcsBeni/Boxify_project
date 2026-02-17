@@ -9,14 +9,20 @@ const mailer = require('../service/mail.service');
  * REGISTER
  */
 router.post('/registration', async (req, res) => {
-  const { name, email, password, confirm } = req.body;
+  try{
+    const { name, email, password, confirm } = req.body;
+  
+    if (password !== confirm) {
+      return res.status(400).json({ message: 'Passwords do not match' });
+    }
+  
+    await User.create({ name, email, password });
+    res.status(201).json({ message: 'Registered successfully' });
 
-  if (password !== confirm) {
-    return res.status(400).json({ message: 'Passwords do not match' });
   }
-
-  await User.create({ name, email, password });
-  res.status(201).json({ message: 'Registered successfully' });
+  catch{
+    res.status(500).json({ error: 'registration failed' });
+  }
 });
 
 /**

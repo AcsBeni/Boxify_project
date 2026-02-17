@@ -7,7 +7,10 @@ import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { User } from '../../interfaces/user';
+import { AuthService } from '../../services/auth.service';
+import { ApiService } from '../../services/api.service';
 
 
 
@@ -30,10 +33,43 @@ import { RouterLink } from '@angular/router';
 })
 export class LoginComponent {
 
+  constructor(
+     private api: ApiService,
+      private auth: AuthService,
+     private router: Router
+  ){}
+
+  keepLoggedIn: boolean =false;
+  user:User={
+    name: '',
+    email: '',
+    password: '',
+  }
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
 
-  login(){}
+  login(){
+    
+    let data = {
+      email: this.user.email,
+      password: this.user.password
+    }
+
+    this.api.login('auth', data).subscribe({
+      next: (res)=>{
+        this.auth.login((res as any).token);
+        if (this.keepLoggedIn) {
+          this.auth.storeUser((res as any).token);
+        }
+        alert('Sikeres belépés!');
+        this.router.navigateByUrl('/home');
+      },
+      error: (err)=>{
+        console.log(err);
+        alert(err.error.error);
+      }
+    });
+  }
 
 }

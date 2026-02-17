@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { User } from '../../interfaces/user';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-registration',
@@ -27,25 +29,36 @@ import { PasswordModule } from 'primeng/password';
   styleUrl: './registration.component.scss'
 })
 export class RegistrationComponent {
-   name = '';
-  email = '';
-  password = '';
-  confirmPassword = '';
-  acceptTerms = false;
+  constructor(
+    private api: ApiService,
+    private router: Router
+  ){}
+
+  user:User={
+    name: '',
+    email: '',
+    password: '',
+    confirm:''
+  }
   register() {
-    if (!this.acceptTerms) {
-      alert('Fogadja el a feltételeket!');
-      return;
+     let data = {
+      name: this.user.name,
+      email: this.user.email,
+      password: this.user.password,
+      confirm: this.user.confirm,
+      
     }
 
-    if (this.password !== this.confirmPassword) {
-      alert('A jelszavak nem egyeznek!');
-      return;
-    }
-
-    console.log({
-      name: this.name,
-      email: this.email,
-      password: this.password
+    this.api.registration('auth', data).subscribe({
+      next: (res)=>{
+        alert('Sikeres regisztráció! Bejelentkezhetsz!');
+        this.router.navigateByUrl('/login');
+      },
+      error: (err)=>{
+        console.log(err);
+        alert(err.error.error);
+      }
     });
+
+    
 }}

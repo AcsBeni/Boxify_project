@@ -19,7 +19,7 @@
             id="name"
             type="text"
             pInputText
-            [(ngModel)]="name"
+            [(ngModel)]="user.name"
             required
           />
           <label for="name">Teljes név</label>
@@ -33,7 +33,7 @@
             id="email"
             type="email"
             pInputText
-            [(ngModel)]="email"
+            [(ngModel)]="user.email"
             required
           />
           <label for="email">Email cím</label>
@@ -45,7 +45,7 @@
         <p-floatLabel>
           <p-password
             id="password"
-            [(ngModel)]="password"
+            [(ngModel)]="user.password"
             [toggleMask]="true"
             required
           ></p-password>
@@ -58,7 +58,7 @@
         <p-floatLabel>
           <p-password
             id="confirmPassword"
-            [(ngModel)]="confirmPassword"
+            [(ngModel)]="user.confirm"
             [feedback]="false"
             [toggleMask]="true"
             required
@@ -67,14 +67,6 @@
         </p-floatLabel>
       </div>
 
-      <!-- TERMS -->
-      <div class="p-field remember-me mb-4">
-        <p-checkbox
-          [(ngModel)]="acceptTerms"
-          binary="true"
-        ></p-checkbox>
-        <label>Elfogadom a felhasználási feltételeket</label>
-      </div>
 
       <!-- BUTTON -->
       <p-button
