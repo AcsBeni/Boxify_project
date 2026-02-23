@@ -8,6 +8,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 
 import { Box } from '../../interfaces/box';
+import { User } from '../../interfaces/user';
+import { AuthService } from '../../services/auth.service';
+import { ApiService } from '../../services/api.service';
 @Component({
   selector: 'app-boxes.form',
   standalone: true,
@@ -28,18 +31,22 @@ export class BoxesFormComponent implements OnInit {
 
   isEditMode = false;
   boxId?: string;
-
+  user:User={
+    name: '',
+    email: '',
+    password: ''
+  }
   box: Box = {
     id: '',
-    userId: '',
+    userId: this.auth.loggedUser().id,
     code: '',
     labelType: 'QR',
     lengthCm: 0,
     widthCm: 0,
     heightCm: 0,
     maxWeightKg: 0,
-    status: 'ACTIVE'
-    
+    status: 'ACTIVE',
+    createdAt: new Date()
   };
 
   labelTypes = ['QR', 'BARCODE'];
@@ -47,16 +54,24 @@ export class BoxesFormComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private auth: AuthService,
+    private api: ApiService
   ) {}
 
   ngOnInit(): void {
     this.boxId = this.route.snapshot.paramMap.get('id') ?? undefined;
     this.isEditMode = !!this.boxId;
+    
 
     if (this.isEditMode) {
       this.loadBox(this.boxId!);
     }
+    if(this.auth.isLoggedUser()){
+      this.user = this.auth.loggedUser()
+      
+    }
+    
   }
 
   /** empty model for /new */
@@ -96,6 +111,7 @@ export class BoxesFormComponent implements OnInit {
   }
 
   save() {
+    console.log(this.box)
     if (this.isEditMode) {
       this.updateBox();
     } else {
@@ -104,8 +120,15 @@ export class BoxesFormComponent implements OnInit {
   }
 
   private createBox() {
-    console.log('CREATE', this.box);
-    this.router.navigate(['/boxes']);
+    this.api.insertBox(this.box).subscribe({
+      next: (res) => {
+      
+        console.log(res)
+      },
+      error: (err)=>{
+        console.log(err.error.error)
+      }
+    });
   }
 
   private updateBox() {

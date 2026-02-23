@@ -61,7 +61,9 @@ export class LoginComponent {
         this.auth.login((res as any).token);
         if (this.keepLoggedIn) {
           this.auth.storeUser((res as any).token);
+          
         }
+        
         alert('Sikeres belépés!');
         this.router.navigateByUrl('/home');
       },

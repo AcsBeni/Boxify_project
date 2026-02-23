@@ -33,10 +33,19 @@ export class BoxesComponent implements OnInit {
   constructor(
     private api: ApiService
   ){}
+  searchTerm = '';
+  dialogVisible = false;
+
+  selectedBox: Box | null = null;
+  boxItems: Item[] = [];
+  boxes: Box[] = [ ];
+
+
 
   ngOnInit(): void {
     this.api.getBoxes().subscribe({
       next: (res) => {
+        this.boxes = res as Box[];
         console.log(res)
       },
       error: (err)=>{
@@ -44,40 +53,7 @@ export class BoxesComponent implements OnInit {
       }
     });
   }
-  searchTerm = '';
-  dialogVisible = false;
-
-  selectedBox: Box | null = null;
-  boxItems: Item[] = [];
-
-  boxes: Box[] = [
-    {
-      id: '1',
-      userId: 'u1',
-      code: 'BOX-123456',
-      labelType: 'QR',
-      lengthCm: 40,
-      widthCm: 30,
-      heightCm: 25,
-      maxWeightKg: 20,
-      location: 'Shelf A',
-      status: 'ACTIVE',
-      createdAt: new Date()
-    },
-    {
-      id: '2',
-      userId: 'u1',
-      code: 'BOX-987654',
-      labelType: 'BARCODE',
-      lengthCm: 60,
-      widthCm: 40,
-      heightCm: 30,
-      maxWeightKg: 35,
-      location: 'Shelf B',
-      status: 'ARCHIVED',
-      createdAt: new Date()
-    }
-  ];
+  
 
   /** 🔍 Keresés code + location alapján */
   get filteredBoxes(): Box[] {

@@ -39,9 +39,23 @@ export class ApiService {
   // BOXES
 
   getBoxes(){
+    
     return this.http.get(`${this.server}/boxes`, this.tokenHeader())
   }
-
-  
+  getBoxById(id:string){
+    return this.http.get(`${this.server}/boxes/${id}`, this.tokenHeader())
+  }
+  insertBox(data:object){
+    return this.http.post(`${this.server}/boxes`,data, this.tokenHeader())
+  }
+  getBoxByField( field: string, op: string, value: string){
+    return this.http.get(`${this.server}/boxes/${field}/${op}/${value}`, this.tokenHeader());
+  }
+  updateBox(id:string){
+    return this.http.patch(`${this.server}/boxes/${id}`, this.tokenHeader())
+  }
+  delete(id:string){
+    return this.http.delete(`${this.server}/boxes/${id}`, this.tokenHeader())
+  }
 
 }

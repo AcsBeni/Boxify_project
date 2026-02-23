@@ -17,7 +17,7 @@ module.exports = (sequelize)=>{
             },
             code: {
                 type: DataTypes.STRING(100),
-                unique: true,
+                //unique: true,
                 allowNull: false
             },
             labelType: {

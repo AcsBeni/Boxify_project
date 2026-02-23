@@ -15,9 +15,9 @@ router.get('/',authenticate, async (req, res)=>{
 //get Boxs by id
 router.get('/:id',authenticate, async (req, res)=>{
     try{
-        const Box = await Box.findByPk(req.params.id);
-        if(Box){
-            res.status(200).json(Box)
+        const box = await Box.findByPk(req.params.id);
+        if(box){
+            res.status(200).json(box)
         }else{
             res.status(404).json({message: "Box not found"})
         }
@@ -64,7 +64,7 @@ router.post('/',authenticate, async (req, res)=>{
             maxWeightKg,
             updatedAt,
             createdAt} = req.body;
-        const Box = await Box.create({
+        const box = await Box.create({
             userId,
             name,
             description,
@@ -75,7 +75,7 @@ router.post('/',authenticate, async (req, res)=>{
             updatedAt,
             createdAt
         })
-        res.status(201).json(Box)
+        res.status(201).json(box)
     }
      catch(e){
         res.status(500).json({message: "Server error", error : e.message})

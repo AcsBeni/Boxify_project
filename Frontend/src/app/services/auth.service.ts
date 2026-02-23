@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   loggedUser(){
-    const token = localStorage.getItem(this.tokenName);
+    const token = sessionStorage.getItem(this.tokenName);
     if (token){
       const payload = token.split('.')[1];
       const decodedPayload = atob(payload);
@@ -49,7 +49,7 @@ export class AuthService {
       );
       return JSON.parse(decodedUTF8Payload);
     }
-    return null;
+    return "no token";
   }
 
   storeUser(token: string){
