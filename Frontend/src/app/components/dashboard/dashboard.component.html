@@ -1,1 +1,106 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+
+  <!-- ===== TOP STATS ===== -->
+   <div class="card flex justify-content-center text-center">
+        <p-card header="26">
+            <p class="m-0">
+            Boxes
+            </p>
+        </p-card>
+    </div>
+
+
+  <section class="stats-grid">
+    <p-card *ngFor="let stat of stats" class="stat-card">
+      <div class="stat-card__value">{{ stat.value }}</div>
+      <div class="stat-card__label">{{ stat.label }}</div>
+    </p-card>
+  </section>
+
+  <!-- ===== OVERVIEW ===== -->
+  <section class="overview-grid">
+
+    <!-- Retrieval -->
+    <p-card class="card">
+      <h4 class="card__title">Retrieval Rate</h4>
+      <p-progressBar [value]="48"></p-progressBar>
+      <span class="card__muted">48% Retrieved</span>
+    </p-card>
+
+    <!-- Selected Box -->
+    <p-card class="card">
+      <h4 class="card__title">Selected Box</h4>
+
+      <div class="box-preview">
+        <strong class="box-preview__id">BOX-123456</strong>
+        <span class="box-preview__meta">Shelf A · 6 items</span>
+
+        <p-progressBar [value]="75"></p-progressBar>
+        <span class="capacity high">75% Full</span>
+      </div>
+    </p-card>
+
+    <!-- Doughnut -->
+    <p-card class="card chart">
+      <h4 class="card__title">Category Split</h4>
+      <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+    </p-card>
+
+    <!-- Bar -->
+    <p-card class="card chart">
+      <h4 class="card__title">Quarterly Activity</h4>
+      <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+    </p-card>
+
+  </section>
+
+  <!-- ===== TABLE ===== -->
+  <section class="table-section">
+    <p-card class="card">
+
+      <div class="table-header">
+        <h3>Boxes</h3>
+        <div class="table-actions">
+          <button pButton icon="pi pi-inbox" label="Empty"></button>
+          <button pButton icon="pi pi-plus" label="New Box"></button>
+        </div>
+      </div>
+
+      <p-table [value]="boxes" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Label</th>
+            <th>Contents</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th>Location</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-box>
+          <tr>
+            <td>{{ box.label }}</td>
+            <td>{{ box.items }} items</td>
+            <td>
+              <p-progressBar [value]="box.capacity"></p-progressBar>
+            </td>
+            <td>
+              <span
+                class="capacity"
+                [ngClass]="{
+                  low: box.capacity < 40,
+                  medium: box.capacity >= 40 && box.capacity < 70,
+                  high: box.capacity >= 70
+                }">
+                {{ box.capacity }}%
+              </span>
+            </td>
+            <td>{{ box.location }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </p-card>
+  </section>
+
+</div>

@@ -1,0 +1,111 @@
+:root {
+  --color-sage-green: #77966D;
+  --color-ebony: #626D58;
+  --color-golden-sand: #BDC667;
+  --color-brown-bark: #544343;
+  --color-alabaster-grey: #F9F9F9;
+  --color-tea-green: #C7D59F;
+  --color-yellow-green: #B7CE63;
+  --color-lime-moss: #8FB339;
+}
+
+.dashboard {
+  background: var(--color-alabaster-grey);
+}
+
+/* Cards */
+p-card {
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+}
+
+.soft-card {
+  padding: 1rem;
+}
+
+/* Top Stats */
+.stat-card {
+  background: var(--color-tea-green);
+  text-align: center;
+
+  .stat-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--color-ebony);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+}
+
+/* Titles */
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--color-brown-bark);
+}
+
+.muted-text {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Box Preview */
+.box-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .box-id {
+    font-weight: 600;
+  }
+
+  .box-meta {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+}
+
+/* Capacity Badges */
+.capacity {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  &.low {
+    background: #f4d7d7;
+    color: #8b2f2f;
+  }
+
+  &.medium {
+    background: var(--color-golden-sand);
+    color: var(--color-brown-bark);
+  }
+
+  &.high {
+    background: var(--color-lime-moss);
+    color: white;
+  }
+}
+
+/* Progress */
+p-progressbar {
+  --p-progressbar-value-bg: var(--color-lime-moss);
+  height: 6px;
+  border-radius: 6px;
+}
+
+/* Buttons */
+button[pButton] {
+  background: var(--color-sage-green);
+  border: none;
+
+  &:hover {
+    background: var(--color-lime-moss);
+  }
+}

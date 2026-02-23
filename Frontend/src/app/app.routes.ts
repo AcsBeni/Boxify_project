@@ -9,6 +9,7 @@ import { PackingComponent } from './components/packing/packing.component';
 import { SearchComponent } from './components/search/search.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { BoxesFormComponent } from './components/boxes.form/boxes.form.component';
 
 export const routes: Routes = [
 
@@ -23,8 +24,8 @@ export const routes: Routes = [
 
         { path: 'boxes',children: [
             { path: '', component: BoxesComponent },
-            { path: 'new', component: BoxesComponent },
-            { path: ':id', component: BoxesComponent }
+            { path: 'new', component: BoxesFormComponent },
+            { path: ':id', component: BoxesFormComponent }
         ] },
 
     //ITEMS------------------------------------------------------------------

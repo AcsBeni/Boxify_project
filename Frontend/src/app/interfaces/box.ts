@@ -10,6 +10,6 @@ export interface Box {
   location?: string; 
   note?: string;
   status: 'ACTIVE' | 'ARCHIVED' | 'DAMAGED';
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
 }

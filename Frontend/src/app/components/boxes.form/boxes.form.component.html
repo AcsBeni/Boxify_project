@@ -1,0 +1,81 @@
+<div class="form-wrapper">
+  <p-card class="form-card">
+
+    <h2 class="title">
+      {{ isEditMode ? 'Update Box' : 'Create New Box' }}
+    </h2>
+
+    <!-- Code -->
+    <div class="field">
+      <label>Code</label>
+      <input pInputText [(ngModel)]="box.code" name="code" />
+    </div>
+
+    <!-- Label Type -->
+    <div class="field">
+      <label>Label Type</label>
+      <p-dropdown
+        [options]="labelTypes"
+        [(ngModel)]="box.labelType"
+        name="labelType">
+      </p-dropdown>
+    </div>
+
+    <!-- Dimensions -->
+    <div class="grid">
+      <div class="field">
+        <label>Length (cm)</label>
+        <input pInputText type="number" [(ngModel)]="box.lengthCm" name="length" />
+      </div>
+
+      <div class="field">
+        <label>Width (cm)</label>
+        <input pInputText type="number" [(ngModel)]="box.widthCm" name="width" />
+      </div>
+
+      <div class="field">
+        <label>Height (cm)</label>
+        <input pInputText type="number" [(ngModel)]="box.heightCm" name="height" />
+      </div>
+    </div>
+
+    <!-- Max Weight -->
+    <div class="field">
+      <label>Max Weight (kg)</label>
+      <input pInputText type="number" [(ngModel)]="box.maxWeightKg" name="weight" />
+    </div>
+
+    <!-- Location -->
+    <div class="field">
+      <label>Location</label>
+      <input pInputText [(ngModel)]="box.location" name="location" />
+    </div>
+
+    <!-- Note -->
+    <div class="field">
+      <label>Note</label>
+      <input pInputText [(ngModel)]="box.note" name="note" />
+    </div>
+
+    <!-- Status -->
+    <div class="field">
+      <label>Status</label>
+      <p-dropdown
+        [options]="statuses"
+        [(ngModel)]="box.status"
+        name="status">
+      </p-dropdown>
+    </div>
+
+    <p-button
+      (click)="save()"
+      [label]="isEditMode ? 'Update Box' : 'Create Box'">
+    </p-button>
+
+     <p-button
+      routerLink="/boxes"
+      label='Vissza a listához'>
+    </p-button>
+
+  </p-card>
+</div>

@@ -36,4 +36,12 @@ export class ApiService {
     return this.http.post(`${this.server}/${table}/login`, data);
   }
 
+  // BOXES
+
+  getBoxes(){
+    return this.http.get(`${this.server}/boxes`, this.tokenHeader())
+  }
+
+  
+
 }

@@ -1,0 +1,50 @@
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.form-card {
+  width: 420px;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.title {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--color-brown-bark);
+}
+
+.field {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    color: var(--color-ebony);
+  }
+
+  input {
+    background: var(--color-alabaster-grey);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.submit-button {
+  width: 100%;
+  margin-top: 1rem;
+  background: var(--color-sage-green);
+  border: none;
+
+  &:hover {
+    background: var(--color-lime-moss);
+  }
+}

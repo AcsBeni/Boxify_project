@@ -1,0 +1,44 @@
+.boxes-card {
+  padding: 1rem;
+}
+
+.boxes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.muted {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-bottom: 0.75rem;
+}
+
+.item-desc {
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
+/* ===== STATUS ===== */
+.status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+
+  &.active {
+    background: #c7d59f;
+    color: #3d4d2c;
+  }
+
+  &.archived {
+    background: #e0e0e0;
+    color: #555;
+  }
+
+  &.damaged {
+    background: #f4d7d7;
+    color: #8b2f2f;
+  }
+}
