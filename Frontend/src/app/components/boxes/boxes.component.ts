@@ -10,7 +10,8 @@ import { Box } from '../../interfaces/box';
 import { Item } from '../../interfaces/item';
 import {ButtonModule } from "primeng/button";
 import { ApiService } from '../../services/api.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-boxes',
@@ -31,7 +32,9 @@ import { RouterModule } from '@angular/router';
 export class BoxesComponent implements OnInit {
 
   constructor(
-    private api: ApiService
+    private router:Router,
+    private api: ApiService,
+    private auth: AuthService
   ){}
   searchTerm = '';
   dialogVisible = false;
@@ -43,7 +46,14 @@ export class BoxesComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getBoxes()
+    if(this.auth.isLoggedUser()){
+      this.getBoxes()
+    }
+    else{
+      this.router.navigate(['/login']);
+    }
+    
+  
     
   }
   

@@ -53,6 +53,7 @@ export class BoxesFormComponent implements OnInit {
   statuses = ['ACTIVE', 'ARCHIVED', 'DAMAGED'];
 
   constructor(
+    
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
@@ -60,7 +61,8 @@ export class BoxesFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.boxId = this.route.snapshot.paramMap.get('id') ?? undefined;
+    if(this.auth.isLoggedUser()){
+      this.boxId = this.route.snapshot.paramMap.get('id') ?? undefined;
     this.isEditMode = !!this.boxId;
     
 
@@ -81,6 +83,11 @@ export class BoxesFormComponent implements OnInit {
     if(this.auth.isLoggedUser()){
       this.user = this.auth.loggedUser()
       
+    }
+    
+    }
+    else{
+      this.router.navigate(['/login']);
     }
     
   }
