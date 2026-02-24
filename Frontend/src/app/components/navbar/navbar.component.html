@@ -1,28 +1,26 @@
-<p-menu [model]="items" styleClass="w-full md:w-15rem">
-  <ng-template pTemplate="start">
-    <span class="inline-flex align-items-center gap-1 px-2 py-2">
-      <span class="font-medium text-xl font-semibold">
-        <span class="logo-icon"><img id="icon" src="./favicon.ico" alt=""></span>
-        Boxify
-      </span>
-    </span>
-  </ng-template>
+<nav class="sidebar">
+  <p-menu [model]="items" styleClass="sidebar-menu">
+    <ng-template pTemplate="start">
+      <div class="brand">
+        <span class="logo-icon">
+          <img id="icon" src="./favicon.ico" alt="Boxify" />
+        </span>
+        
+      </div>
+    </ng-template>
 
-  <ng-template pTemplate="submenuheader" let-item>
-    <span class="text-primary font-bold">{{ item.label }}</span>
-  </ng-template>
-
-  <ng-template pTemplate="item" let-item>
-    <a
-      pRipple
-      class="flex align-items-center p-menuitem-link"
-      [routerLink]="item.routerLink"
-      routerLinkActive="p-menuitem-active"
-    >
-      <span *ngIf="item.icon" [class]="item.icon"></span>
-      <span class="ml-2">{{ item.label }}</span>
-    </a>
-  </ng-template>
-
-  
-</p-menu>
+    <ng-template pTemplate="item" let-item>
+      <a
+        pRipple
+        class="menu-tile"
+        [routerLink]="item.routerLink"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="item.command && item.command({ originalEvent: $event, item: item })"
+      >
+        <span class="tile-icon" *ngIf="item.icon" [class]="item.icon"></span>
+        <span class="tile-label">{{ item.label }}</span>
+      </a>
+    </ng-template>
+  </p-menu>
+</nav>
