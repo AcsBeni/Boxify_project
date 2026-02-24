@@ -41,13 +41,10 @@
 
 /* ===== ADD BUTTON ===== */
 .add-btn {
-  background: var(--color-sage-green);
+  
   border: none;
 }
 
-.add-btn:hover {
-  background: var(--color-lime-moss);
-}
 
 /* ===== TABLE ===== */
 .boxes-table {
@@ -116,14 +113,15 @@
 }
 
 .edit-btn {
-  background: var(--color-golden-sand);
+  
   border: none;
 }
 
-.edit-btn:hover {
-  background: var(--color-yellow-green);
-}
 
+.delete-btn {
+
+  border: none;
+}
 
 
 /* ===== TEXT ===== */

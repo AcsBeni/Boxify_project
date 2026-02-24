@@ -67,16 +67,14 @@
             icon="pi pi-pencil"
             class="edit-btn"
             rounded
-            routerLink="/boxes/{{ box.id }}"
-            
-             />
+            routerLink="/boxes/{{ box.id }}" />
 
           <p-button
             icon="pi pi-trash"
             class="delete-btn"
-            rounded
             severity="danger"
-            (onClick)="delete(box.id)" />
+            rounded
+            (onClick)="delete(box.id); $event.stopPropagation()" />
         </td>
       </tr>
     </ng-template>
