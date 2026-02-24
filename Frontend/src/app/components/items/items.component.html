@@ -1,1 +1,213 @@
-<p>items works!</p>
+<!-- ===== LIST VIEW ===== -->
+<div *ngIf="!isFormMode" class="list-wrapper">
+  <div class="list-header">
+    <div>
+      <h2 class="title">Items</h2>
+      <span class="subtitle">Manage your inventory items</span>
+    </div>
+    <p-button
+      (click)="createNew()"
+      label="Create New Item"
+      icon="pi pi-plus"
+      class="create-btn">
+    </p-button>
+  </div>
+
+  <p-card class="list-card">
+    <p-table
+      [value]="items"
+      [loading]="isLoading"
+      [paginator]="true"
+      [rows]="10"
+      [globalFilterFields]="['name', 'description']"
+      responsiveLayout="scroll">
+      
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name">
+            Name <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th>Description</th>
+          <th pSortableColumn="lengthCm">
+            Length (cm) <p-sortIcon field="lengthCm"></p-sortIcon>
+          </th>
+          <th pSortableColumn="widthCm">
+            Width (cm) <p-sortIcon field="widthCm"></p-sortIcon>
+          </th>
+          <th pSortableColumn="heightCm">
+            Height (cm) <p-sortIcon field="heightCm"></p-sortIcon>
+          </th>
+          <th pSortableColumn="maxWeightKg">
+            Max Weight (kg) <p-sortIcon field="maxWeightKg"></p-sortIcon>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{ item.name }}</td>
+          <td>{{ item.description || '-' }}</td>
+          <td>{{ item.lengthCm }}</td>
+          <td>{{ item.widthCm }}</td>
+          <td>{{ item.heightCm }}</td>
+          <td>{{ item.maxWeightKg }}</td>
+          <td>
+            <div class="action-buttons">
+              <p-button
+                (click)="editItem(item)"
+                [disabled]="isLoading"
+                icon="pi pi-pencil"
+                class="edit-btn"
+                [rounded]="true"
+                [text]="true">
+              </p-button>
+              <p-button
+                (click)="deleteItem(item)"
+                [disabled]="isLoading"
+                icon="pi pi-trash"
+                class="delete-btn"
+                [rounded]="true"
+                [text]="true">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="empty-message">
+            No items found. <a (click)="createNew()" class="create-link">Create one now</a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <p-confirmDialog></p-confirmDialog>
+</div>
+
+<!-- ===== FORM VIEW ===== -->
+<div *ngIf="isFormMode" class="form-wrapper">
+  <p-card class="form-card">
+
+    <!-- ===== TITLE ===== -->
+    <div class="form-header">
+      <h2 class="title">
+        {{ isEditMode ? 'Update Item' : 'Create New Item' }}
+      </h2>
+      <span class="subtitle">
+        {{ isEditMode ? 'Edit existing item details' : 'Add a new item to your inventory' }}
+      </span>
+    </div>
+
+    <!-- ===== BASIC INFO ===== -->
+    <div class="form-section">
+      <h4 class="section-title">Basic Information</h4>
+
+      <div class="grid full">
+        <div class="field">
+          <label>Item Name *</label>
+          <input 
+            pInputText 
+            [(ngModel)]="item.name" 
+            name="name"
+            placeholder="Enter item name"
+            [disabled]="isLoading" />
+        </div>
+      </div>
+
+      <div class="grid full">
+        <div class="field">
+          <label>Description</label>
+          <textarea 
+            pInputTextarea 
+            [(ngModel)]="item.description" 
+            name="description"
+            rows="3"
+            placeholder="Enter item description (optional)"
+            [disabled]="isLoading">
+          </textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DIMENSIONS ===== -->
+    <div class="form-section">
+      <h4 class="section-title">Dimensions (cm)</h4>
+
+      <div class="grid three">
+        <div class="field">
+          <label>Length (cm) *</label>
+          <input 
+            pInputText 
+            type="number" 
+            [(ngModel)]="item.lengthCm"
+            name="lengthCm"
+            placeholder="0.00"
+            [disabled]="isLoading" />
+        </div>
+
+        <div class="field">
+          <label>Width (cm) *</label>
+          <input 
+            pInputText 
+            type="number" 
+            [(ngModel)]="item.widthCm"
+            name="widthCm"
+            placeholder="0.00"
+            [disabled]="isLoading" />
+        </div>
+
+        <div class="field">
+          <label>Height (cm) *</label>
+          <input 
+            pInputText 
+            type="number" 
+            [(ngModel)]="item.heightCm"
+            name="heightCm"
+            placeholder="0.00"
+            [disabled]="isLoading" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WEIGHT ===== -->
+    <div class="form-section">
+      <h4 class="section-title">Weight Capacity</h4>
+
+      <div class="grid full">
+        <div class="field">
+          <label>Max Weight (kg) *</label>
+          <input 
+            pInputText 
+            type="number" 
+            [(ngModel)]="item.maxWeightKg"
+            name="maxWeightKg"
+            placeholder="0.00"
+            [disabled]="isLoading" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ACTIONS ===== -->
+    <div class="form-actions">
+      <p-button
+        (click)="save()"
+        [label]="isEditMode ? 'Update Item' : 'Create Item'"
+        [loading]="isLoading"
+        [disabled]="isLoading"
+        class="primary-btn">
+      </p-button>
+
+      <p-button
+        (click)="backToList()"
+        label="Cancel"
+        class="secondary-btn"
+        [disabled]="isLoading">
+      </p-button>
+    </div>
+
+  </p-card>
+</div>

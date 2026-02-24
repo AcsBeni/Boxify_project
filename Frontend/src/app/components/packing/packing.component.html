@@ -1,1 +1,122 @@
-<p>packing works!</p>
+<div class="packing-wrapper">
+  <div class="packing-header">
+    <div>
+      <h2 class="title">Packing</h2>
+      <span class="subtitle">Organize your items into boxes</span>
+    </div>
+  </div>
+
+  <div class="boxes-grid">
+    <!-- Box Cards -->
+    <p-card *ngFor="let box of boxes" class="box-card">
+      <ng-template pTemplate="header">
+        <div class="box-header">
+          <div class="qr-code-container">
+            <img 
+              *ngIf="getQRCode(box.id)" 
+              [src]="getQRCode(box.id)" 
+              alt="QR Code for {{ box.code }}"
+              class="qr-code-image">
+            <div *ngIf="!getQRCode(box.id)" class="qr-loading">
+              Generating QR Code...
+            </div>
+          </div>
+          <div class="box-info">
+            <h3 class="box-code">{{ box.code }}</h3>
+            <span class="box-status" [ngClass]="'status-' + (box.status || 'ACTIVE')">
+              {{ box.status || 'ACTIVE' }}
+            </span>
+          </div>
+          <div class="box-dimensions">
+            {{ box.lengthCm }}×{{ box.widthCm }}×{{ box.heightCm }} cm
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="box-content">
+        <!-- Items in Box -->
+        <div class="items-section">
+          <h4 class="section-title">Items in Box</h4>
+
+          <div *ngIf="getBoxItems(box.id).length === 0" class="empty-state">
+            <p class="empty-text">No items in this box yet</p>
+          </div>
+
+          <div *ngIf="getBoxItems(box.id).length > 0" class="items-list">
+            <div *ngFor="let boxItem of getBoxItems(box.id)" class="item-row">
+              <div class="item-info">
+                <span class="item-name">{{ getItemDetails(boxItem.itemId)?.name }}</span>
+                <span class="item-qty">Qty: {{ boxItem.quantity }}</span>
+              </div>
+              <p-button
+                (click)="deleteBoxItem(boxItem)"
+                [disabled]="isLoading"
+                icon="pi pi-trash"
+                class="delete-btn"
+                [rounded]="true"
+                [text]="true">
+              </p-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Item Button -->
+        <p-button
+          (click)="openAddDialog(box)"
+          label="Add Item"
+          icon="pi pi-plus"
+          class="add-item-btn"
+          [disabled]="isLoading">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Add Item Dialog -->
+  <p-dialog
+    [(visible)]="showAddDialog"
+    header="Add Item to Box"
+    [modal]="true"
+    [style]="{ width: '40vw' }"
+    [breakpoints]="{ '100vw': '90vw', '35em': '90vw' }">
+
+    <div class="dialog-content">
+      <div class="field">
+        <label>Select Item</label>
+        <p-dropdown
+          [options]="items"
+          [(ngModel)]="selectedItem"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="Choose an item">
+        </p-dropdown>
+      </div>
+
+      <div class="field">
+        <label>Quantity</label>
+        <p-inputNumber
+          [(ngModel)]="quantity"
+          [min]="1"
+          [step]="1">
+        </p-inputNumber>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancel"
+        (click)="showAddDialog = false"
+        class="secondary-btn">
+      </p-button>
+      <p-button
+        label="Add Item"
+        (click)="addItemToBox()"
+        [loading]="isLoading"
+        [disabled]="isLoading"
+        class="primary-btn">
+      </p-button>
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog></p-confirmDialog>
+</div>

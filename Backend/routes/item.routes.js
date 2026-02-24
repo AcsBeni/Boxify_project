@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {Item, operatorMap} = require('../models/index')
+const {Item, Box_Item, operatorMap} = require('../models/index')
 const {authenticate} = require("../middlewares/auth.middleware")
 
 //Item Crud operations
@@ -120,6 +120,14 @@ router.patch('/:id',authenticate, async (req, res)=>{
 });
 router.delete('/:id',authenticate, async (req, res)=>{
     try{
+        // First delete all box_items associated with this item
+        await Box_Item.destroy({
+            where: {
+                itemId: req.params.id
+            }
+        });
+        
+        // Then delete the item itself
         const items = await Item.destroy({
             where: {
                 id: req.params.id

@@ -41,18 +41,12 @@ export class RegistrationComponent {
     confirm:''
   }
   register() {
-     let data = {
-      name: this.user.name,
-      email: this.user.email,
-      password: this.user.password,
-      confirm: this.user.confirm,
-      
-    }
-    if(!data.name || !data.email || !data.password || data.confirm){
+  
+    if(!this.user.name || !this.user.email || !this.user.password || !this.user.confirm){
       alert("Hiányzó adatok")
       return
     }
-    this.api.registration('auth', data).subscribe({
+    this.api.registration('auth', this.user).subscribe({
       
       next: (res)=>{
         alert('Sikeres regisztráció! Bejelentkezhetsz!');

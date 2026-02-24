@@ -1,13 +1,15 @@
 
 .sidebar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   height: 100vh;
   width: 90px;              
   background: #2f6b57;      
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  z-index: 1000;
 }
 
 
