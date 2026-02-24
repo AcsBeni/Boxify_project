@@ -64,4 +64,9 @@ export class AuthService {
     const user: any = this.loggedUser();
     return user.role === 'admin';
   }
+
+  hasRole(role:string):boolean{
+    const user: any = this.loggedUser();
+    return user.role === role
+  }
 }
