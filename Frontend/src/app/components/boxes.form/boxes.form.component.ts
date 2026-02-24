@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -53,6 +53,7 @@ export class BoxesFormComponent implements OnInit {
   statuses = ['ACTIVE', 'ARCHIVED', 'DAMAGED'];
 
   constructor(
+    
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
@@ -60,16 +61,33 @@ export class BoxesFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.boxId = this.route.snapshot.paramMap.get('id') ?? undefined;
+    if(this.auth.isLoggedUser()){
+      this.boxId = this.route.snapshot.paramMap.get('id') ?? undefined;
     this.isEditMode = !!this.boxId;
     
 
     if (this.isEditMode) {
       this.loadBox(this.boxId!);
+      this.api.getBoxById(this.boxId!).subscribe({
+      next: (res) => {
+        this.box = res as Box;
+       
+      },
+      error: (err)=>{
+        console.log(err.error.error)
+      }
+    });
+
+
     }
     if(this.auth.isLoggedUser()){
       this.user = this.auth.loggedUser()
       
+    }
+    
+    }
+    else{
+      this.router.navigate(['/login']);
     }
     
   }
@@ -111,7 +129,7 @@ export class BoxesFormComponent implements OnInit {
   }
 
   save() {
-    console.log(this.box)
+   
     if (this.isEditMode) {
       this.updateBox();
     } else {
@@ -122,8 +140,9 @@ export class BoxesFormComponent implements OnInit {
   private createBox() {
     this.api.insertBox(this.box).subscribe({
       next: (res) => {
-      
+        
         console.log(res)
+        
       },
       error: (err)=>{
         console.log(err.error.error)
@@ -132,7 +151,15 @@ export class BoxesFormComponent implements OnInit {
   }
 
   private updateBox() {
-    console.log('UPDATE', this.boxId, this.box);
+    this.api.updateBox(this.boxId!,this.box!).subscribe({
+      next: (res) => {
+       
+        console.log(res)
+      },
+      error: (err)=>{
+        console.log(err.error.error)
+      }
+    });
     this.router.navigate(['/boxes']);
   }
 }

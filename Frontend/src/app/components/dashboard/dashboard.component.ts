@@ -6,6 +6,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { CommonModule } from '@angular/common';
 import { Box } from '../../interfaces/box';
 import { ChartModule } from 'primeng/chart';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 
 
@@ -29,10 +31,19 @@ export class DashboardComponent implements OnInit {
   basicData: any;
   basicOptions: any;
   options: any;
+  constructor(
+    private router:Router,
+    private auth: AuthService
+  ){}
 
     ngOnInit() {
-        this.initDoughnutChart()
-        this.initBarChart()
+        if(this.auth.isLoggedUser()){
+          this.initDoughnutChart()
+          this.initBarChart()
+        }
+        else{
+          this.router.navigate(['/login']);
+        }
         
     }
 

@@ -51,8 +51,8 @@ export class ApiService {
   getBoxByField( field: string, op: string, value: string){
     return this.http.get(`${this.server}/boxes/${field}/${op}/${value}`, this.tokenHeader());
   }
-  updateBox(id:string){
-    return this.http.patch(`${this.server}/boxes/${id}`, this.tokenHeader())
+  updateBox(id:string, data:object){
+    return this.http.patch(`${this.server}/boxes/${id}`,data, this.tokenHeader())
   }
   delete(id:string){
     return this.http.delete(`${this.server}/boxes/${id}`, this.tokenHeader())

@@ -10,7 +10,8 @@ import { Box } from '../../interfaces/box';
 import { Item } from '../../interfaces/item';
 import {ButtonModule } from "primeng/button";
 import { ApiService } from '../../services/api.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-boxes',
@@ -31,7 +32,9 @@ import { RouterModule } from '@angular/router';
 export class BoxesComponent implements OnInit {
 
   constructor(
-    private api: ApiService
+    private router:Router,
+    private api: ApiService,
+    private auth: AuthService
   ){}
   searchTerm = '';
   dialogVisible = false;
@@ -43,15 +46,15 @@ export class BoxesComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.api.getBoxes().subscribe({
-      next: (res) => {
-        this.boxes = res as Box[];
-        console.log(res)
-      },
-      error: (err)=>{
-        console.log(err.error.error)
-      }
-    });
+    if(this.auth.isLoggedUser()){
+      this.getBoxes()
+    }
+    else{
+      this.router.navigate(['/login']);
+    }
+    
+  
+    
   }
   
 
@@ -65,7 +68,17 @@ export class BoxesComponent implements OnInit {
     );
   }
 
-
+  getBoxes(){
+    this.api.getBoxes().subscribe({
+      next: (res) => {
+        this.boxes = res as Box[];
+        console.log(res)
+      },
+      error: (err)=>{
+        console.log(err.error.error)
+      }
+    });
+  }
   openBox(box: Box) {
     this.selectedBox = box;
     this.dialogVisible = true;
@@ -73,6 +86,18 @@ export class BoxesComponent implements OnInit {
     this.loadBoxItems(box.id);
   }
 
+  delete(id:string){
+    if(confirm("Biztosan törli?")){
+      this.api.delete(id).subscribe({
+        next: (res) => {
+          this.getBoxes()
+        },
+        error: (err)=>{
+          console.log(err.error.error)
+        }
+    });
+    }
+  }
 
   loadBoxItems(boxId: string) {
     this.boxItems = [

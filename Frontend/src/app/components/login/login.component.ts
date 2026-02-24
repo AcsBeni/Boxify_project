@@ -65,7 +65,7 @@ export class LoginComponent {
         }
         
         alert('Sikeres belépés!');
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/dashboard');
       },
       error: (err)=>{
         console.log(err);
