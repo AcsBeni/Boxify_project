@@ -42,9 +42,9 @@ router.get('/:field/:op/:value',authenticate, async (req, res)=>{
             }
         };
 
-        const Boxs = await Box.findAll({where})
+        const box = await Box.findAll({where})
 
-        res.status(200).json(Boxs)
+        res.status(200).json(box)
     }
     catch(e){
         res.status(500).json({message: "Server error", error : e.message})
@@ -56,21 +56,27 @@ router.post('/',authenticate, async (req, res)=>{
     try{
 
         const {userId,
-            name,
-            description,
+            code,
+            labelType,
             lengthCm,
             widthCm,
             heightCm,
+            location,
+            note,
+            status,
             maxWeightKg,
             updatedAt,
             createdAt} = req.body;
         const box = await Box.create({
             userId,
-            name,
-            description,
+            code,
+            labelType,
             lengthCm,
             widthCm,
             heightCm,
+            location,
+            note,
+            status,
             maxWeightKg,
             updatedAt,
             createdAt
@@ -85,30 +91,35 @@ router.patch('/:id',authenticate, async (req, res)=>{
     try{
 
         const {userId,
-            name,
-            description,
+            code,
+            labelType,
             lengthCm,
             widthCm,
             heightCm,
+            location,
+            note,
+            status,
             maxWeightKg,
             updatedAt,
-            createdAt} = req.body;
-        const Box = await Box.update({
+            } = req.body;
+        const box = await Box.update({
             userId,
-            name,
-            description,
+            code,
+            labelType,
             lengthCm,
             widthCm,
             heightCm,
+            location,
+            note,
+            status,
             maxWeightKg,
             updatedAt,
-            createdAt
         }, {
             where: {
                 id: req.params.id
             }
         })
-        if(Box[0] > 0){
+        if(box[0] > 0){
             res.status(200).json({message: "Box updated"})
         }else{
             res.status(404).json({message: "Box not found"})
@@ -120,12 +131,12 @@ router.patch('/:id',authenticate, async (req, res)=>{
 });
 router.delete('/:id',authenticate, async (req, res)=>{
     try{
-        const Box = await Box.destroy({
+        const box = await Box.destroy({
             where: {
                 id: req.params.id
             }
         })
-        if(Box > 0){
+        if(box > 0){
             res.status(200).json({message: "Box deleted"})
         }else{
             res.status(404).json({message: "Box not found"})

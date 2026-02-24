@@ -25,7 +25,7 @@
       <tr>
         <th>Kód</th>
         <th>Címke</th>
-        <th>Méret (cm)</th>
+        <th>hosszúság,szélesség,magasság(cm)</th>
         <th>Max súly</th>
         <th>Státusz</th>
         <th>Hely</th>
@@ -49,7 +49,7 @@
         <td>{{ box.location || '—' }}</td>
         <td>
           
-            <p-button  icon="pi pi-trash" severity="danger" />
+            <p-button  icon="pi pi-trash" severity="danger" (onClick)="delete(box.id)"  />
              <p-button icon="pi pi-pencil" severity="warning" routerLink="/boxes/{{box.id}}" />
 
         </td>

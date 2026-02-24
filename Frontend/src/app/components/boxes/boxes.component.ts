@@ -43,15 +43,8 @@ export class BoxesComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.api.getBoxes().subscribe({
-      next: (res) => {
-        this.boxes = res as Box[];
-        console.log(res)
-      },
-      error: (err)=>{
-        console.log(err.error.error)
-      }
-    });
+    this.getBoxes()
+    
   }
   
 
@@ -65,7 +58,17 @@ export class BoxesComponent implements OnInit {
     );
   }
 
-
+  getBoxes(){
+    this.api.getBoxes().subscribe({
+      next: (res) => {
+        this.boxes = res as Box[];
+        console.log(res)
+      },
+      error: (err)=>{
+        console.log(err.error.error)
+      }
+    });
+  }
   openBox(box: Box) {
     this.selectedBox = box;
     this.dialogVisible = true;
@@ -73,6 +76,18 @@ export class BoxesComponent implements OnInit {
     this.loadBoxItems(box.id);
   }
 
+  delete(id:string){
+    if(confirm("Biztosan törli?")){
+      this.api.delete(id).subscribe({
+        next: (res) => {
+          this.getBoxes()
+        },
+        error: (err)=>{
+          console.log(err.error.error)
+        }
+    });
+    }
+  }
 
   loadBoxItems(boxId: string) {
     this.boxItems = [
