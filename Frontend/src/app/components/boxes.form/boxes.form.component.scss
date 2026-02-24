@@ -1,50 +1,114 @@
+:root {
+  --color-sage-green: #77966D;
+  --color-ebony: #626D58;
+  --color-golden-sand: #BDC667;
+  --color-brown-bark: #544343;
+  --color-alabaster-grey: #F9F9F9;
+  --color-tea-green: #C7D59F;
+  --color-yellow-green: #B7CE63;
+  --color-lime-moss: #8FB339;
+}
+
+/* ===== WRAPPER ===== */
 .form-wrapper {
   display: flex;
   justify-content: center;
-  padding: 3rem 1rem;
+  padding: 2rem;
+  background: var(--color-alabaster-grey);
 }
 
+/* ===== CARD ===== */
 .form-card {
-  width: 420px;
-  padding: 2rem;
-  border-radius: 12px;
-  background: #fff;
+  width: 100%;
+  max-width: 820px;
+  padding: 1.75rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+}
+
+/* ===== HEADER ===== */
+.form-header {
+  margin-bottom: 1.5rem;
 }
 
 .title {
-  margin-bottom: 1.5rem;
-  text-align: center;
+  margin: 0;
   color: var(--color-brown-bark);
 }
 
-.field {
-  margin-bottom: 1rem;
-
-  label {
-    display: block;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-    color: var(--color-ebony);
-  }
-
-  input {
-    background: var(--color-alabaster-grey);
-  }
+.subtitle {
+  font-size: 0.75rem;
+  opacity: 0.7;
 }
 
+/* ===== SECTIONS ===== */
+.form-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--color-ebony);
+}
+
+/* ===== GRID ===== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+  gap: 1rem;
+
+  &.two {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &.three {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.submit-button {
-  width: 100%;
-  margin-top: 1rem;
+/* ===== FIELD ===== */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-ebony);
+  }
+}
+
+/* ===== INPUTS ===== */
+input[pInputText],
+.p-dropdown {
+  border-radius: 10px;
+}
+
+/* ===== ACTIONS ===== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+/* ===== BUTTONS ===== */
+.primary-btn {
   background: var(--color-sage-green);
   border: none;
+}
 
-  &:hover {
-    background: var(--color-lime-moss);
-  }
+.primary-btn:hover {
+  background: var(--color-lime-moss);
+}
+
+.secondary-btn {
+  background: var(--color-golden-sand);
+  border: none;
+}
+
+.secondary-btn:hover {
+  background: var(--color-yellow-green);
 }

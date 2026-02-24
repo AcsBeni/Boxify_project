@@ -15,9 +15,9 @@ router.get('/',authenticate, async (req, res)=>{
 //get Items by id
 router.get('/:id',authenticate, async (req, res)=>{
     try{
-        const Item = await Item.findByPk(req.params.id);
-        if(Item){
-            res.status(200).json(Item)
+        const Items = await Item.findByPk(req.params.id);
+        if(Items){
+            res.status(200).json(Items)
         }else{
             res.status(404).json({message: "Item not found"})
         }
@@ -64,7 +64,7 @@ router.post('/',authenticate, async (req, res)=>{
             maxWeightKg,
             updatedAt,
             createdAt} = req.body;
-        const Item = await Item.create({
+        const items = await Item.create({
             userId,
             name,
             description,
@@ -75,7 +75,7 @@ router.post('/',authenticate, async (req, res)=>{
             updatedAt,
             createdAt
         })
-        res.status(201).json(Item)
+        res.status(201).json(items)
     }
      catch(e){
         res.status(500).json({message: "Server error", error : e.message})
@@ -93,7 +93,7 @@ router.patch('/:id',authenticate, async (req, res)=>{
             maxWeightKg,
             updatedAt,
             createdAt} = req.body;
-        const Item = await Item.update({
+        const Items = await Item.update({
             userId,
             name,
             description,
@@ -108,7 +108,7 @@ router.patch('/:id',authenticate, async (req, res)=>{
                 id: req.params.id
             }
         })
-        if(Item[0] > 0){
+        if(Items[0] > 0){
             res.status(200).json({message: "Item updated"})
         }else{
             res.status(404).json({message: "Item not found"})
@@ -120,12 +120,12 @@ router.patch('/:id',authenticate, async (req, res)=>{
 });
 router.delete('/:id',authenticate, async (req, res)=>{
     try{
-        const Item = await Item.destroy({
+        const items = await Item.destroy({
             where: {
                 id: req.params.id
             }
         })
-        if(Item > 0){
+        if(items > 0){
             res.status(200).json({message: "Item deleted"})
         }else{
             res.status(404).json({message: "Item not found"})

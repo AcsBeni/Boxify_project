@@ -8,6 +8,8 @@ import { Box } from '../../interfaces/box';
 import { ChartModule } from 'primeng/chart';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ApiService } from '../../services/api.service';
+import { Item } from '../../interfaces/item';
 
 
 
@@ -27,19 +29,22 @@ import { AuthService } from '../../services/auth.service';
 export class DashboardComponent implements OnInit {
   stats: any;
   boxes: Box[]=[];
+  items: Item[]=[];
   data: any;
   basicData: any;
   basicOptions: any;
   options: any;
   constructor(
     private router:Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private api: ApiService
   ){}
 
     ngOnInit() {
         if(this.auth.isLoggedUser()){
           this.initDoughnutChart()
           this.initBarChart()
+          this.getBoxes()
         }
         else{
           this.router.navigate(['/login']);
@@ -48,7 +53,22 @@ export class DashboardComponent implements OnInit {
     }
 
 
-    //Chart Renders
+    //Data collection---------------------------------------------------------------------------
+    getBoxes(){
+    
+      this.api.getBoxByUserId(this.auth.loggedUser().id).subscribe({
+        next: (res) => {
+          this.boxes = res as Box[];
+          console.log(res)
+        },
+        error: (err)=>{
+          console.log(err.error.error)
+        }
+      });
+    }
+
+
+    //Chart Renders---------------------------------------------------------------------------
    private initDoughnutChart() {
     const css = getComputedStyle(document.documentElement);
 

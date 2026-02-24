@@ -55,7 +55,10 @@ export class LoginComponent {
       email: this.user.email,
       password: this.user.password
     }
-
+    if(!data.email || !data.password){
+      alert("Hiányzó adatok")
+      return
+    }
     this.api.login('auth', data).subscribe({
       next: (res)=>{
         this.auth.login((res as any).token);
@@ -64,7 +67,7 @@ export class LoginComponent {
           
         }
         
-        alert('Sikeres belépés!');
+        
         this.router.navigateByUrl('/dashboard');
       },
       error: (err)=>{

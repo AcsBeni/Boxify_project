@@ -48,8 +48,12 @@ export class RegistrationComponent {
       confirm: this.user.confirm,
       
     }
-
+    if(!data.name || !data.email || !data.password || data.confirm){
+      alert("Hiányzó adatok")
+      return
+    }
     this.api.registration('auth', data).subscribe({
+      
       next: (res)=>{
         alert('Sikeres regisztráció! Bejelentkezhetsz!');
         this.router.navigateByUrl('/login');

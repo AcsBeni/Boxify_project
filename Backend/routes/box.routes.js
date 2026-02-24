@@ -27,6 +27,24 @@ router.get('/:id',authenticate, async (req, res)=>{
     }
     
 });
+router.get('/user/:userId',authenticate, async (req, res)=>{
+    try{
+        const { userId } = req.params;
+        const boxes = await Box.findAll({
+            where: { userId }
+        });
+        if(boxes){
+            res.status(200).json(boxes)
+        }else{
+            res.status(404).json({message: "Box not found"})
+        }
+    }
+    catch(e){
+        res.status(500).json({message: "Server error", error : e.message})
+    }
+    
+});
+
 
 //get Boxs by field
 router.get('/:field/:op/:value',authenticate, async (req, res)=>{

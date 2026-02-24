@@ -69,7 +69,8 @@ export class BoxesComponent implements OnInit {
   }
 
   getBoxes(){
-    this.api.getBoxes().subscribe({
+    
+    this.api.getBoxByUserId(this.auth.loggedUser().id).subscribe({
       next: (res) => {
         this.boxes = res as Box[];
         console.log(res)
@@ -88,7 +89,7 @@ export class BoxesComponent implements OnInit {
 
   delete(id:string){
     if(confirm("Biztosan törli?")){
-      this.api.delete(id).subscribe({
+      this.api.deleteBox(id).subscribe({
         next: (res) => {
           this.getBoxes()
         },
