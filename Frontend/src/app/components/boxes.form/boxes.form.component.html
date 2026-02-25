@@ -1,28 +1,28 @@
 <div class="form-wrapper">
   <p-card class="form-card">
 
-    <!-- ===== TITLE ===== -->
+    <!-- ===== CÍM ===== -->
     <div class="form-header">
       <h2 class="title">
-        {{ isEditMode ? 'Update Box' : 'Create New Box' }}
+        {{ isEditMode ? 'Doboz frissítése' : 'Új doboz létrehozása' }}
       </h2>
       <span class="subtitle">
-        {{ isEditMode ? 'Edit existing box details' : 'Add a new storage box' }}
+        {{ isEditMode ? 'Meglévő doboz adatainak szerkesztése' : 'Új tárolódoboz hozzáadása' }}
       </span>
     </div>
 
-    <!-- ===== BASIC INFO ===== -->
+    <!-- ===== ALAPADATOK ===== -->
     <div class="form-section">
-      <h4 class="section-title">Basic Information</h4>
+      <h4 class="section-title">Alapadatok</h4>
 
       <div class="grid two">
         <div class="field">
-          <label>Code</label>
+          <label>Kód</label>
           <input pInputText [(ngModel)]="box.code" name="code" />
         </div>
 
         <div class="field">
-          <label>Label Type</label>
+          <label>Címke típusa</label>
           <p-dropdown
             [options]="labelTypes"
             [(ngModel)]="box.labelType"
@@ -32,40 +32,40 @@
       </div>
     </div>
 
-    <!-- ===== DIMENSIONS ===== -->
+    <!-- ===== MÉRETEK ===== -->
     <div class="form-section">
-      <h4 class="section-title">Dimensions (cm)</h4>
+      <h4 class="section-title">Méretek (cm)</h4>
 
       <div class="grid three">
         <div class="field">
-          <label>Length</label>
+          <label>Hosszúság</label>
           <input pInputText type="number" [(ngModel)]="box.lengthCm" />
         </div>
 
         <div class="field">
-          <label>Width</label>
+          <label>Szélesség</label>
           <input pInputText type="number" [(ngModel)]="box.widthCm" />
         </div>
 
         <div class="field">
-          <label>Height</label>
+          <label>Magasság</label>
           <input pInputText type="number" [(ngModel)]="box.heightCm" />
         </div>
       </div>
     </div>
 
-    <!-- ===== EXTRA ===== -->
+    <!-- ===== TOVÁBBI ADATOK ===== -->
     <div class="form-section">
-      <h4 class="section-title">Additional Details</h4>
+      <h4 class="section-title">További adatok</h4>
 
       <div class="grid two">
         <div class="field">
-          <label>Max Weight (kg)</label>
+          <label>Maximális terhelés (kg)</label>
           <input pInputText type="number" [(ngModel)]="box.maxWeightKg" />
         </div>
 
         <div class="field">
-          <label>Status</label>
+          <label>Állapot</label>
           <p-dropdown
             [options]="statuses"
             [(ngModel)]="box.status">
@@ -73,22 +73,22 @@
         </div>
 
         <div class="field">
-          <label>Location</label>
+          <label>Helyszín</label>
           <input pInputText [(ngModel)]="box.location" />
         </div>
 
         <div class="field">
-          <label>Note</label>
+          <label>Megjegyzés</label>
           <input pInputText [(ngModel)]="box.note" />
         </div>
       </div>
     </div>
 
-    <!-- ===== ACTIONS ===== TODO:note nagyítása -->
+    <!-- ===== MŰVELETEK ===== TODO: megjegyzés mező nagyítása -->
     <div class="form-actions">
       <p-button
         (click)="save()"
-        [label]="isEditMode ? 'Update Box' : 'Create Box'"
+        [label]="isEditMode ? 'Doboz frissítése' : 'Doboz létrehozása'"
         class="primary-btn">
       </p-button>
 

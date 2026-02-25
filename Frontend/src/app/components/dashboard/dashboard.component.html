@@ -30,13 +30,13 @@
 
   <!-- Chart 1 -->
   <p-card class="card ">
-    <h4 class="card-title">Items by Category</h4>
+    <h4 class="card-title">Dobozok tárolóhelye</h4>
     <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
   </p-card>
 
   <!-- Chart 2 -->
   <p-card class="card " >
-    <h4 class="card-title">Storage Usage</h4>
+    <h4 class="card-title">Tárolóhely felhasználva</h4>
     <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
     <span class="muted-text">48% foglalt</span>
   </p-card>
@@ -44,42 +44,46 @@
   <!-- Table (FULL WIDTH) -->
   <p-card class="card table-card">
     <div class="table-header">
-      <h3>Boxes</h3>
+      <h3>Dobozok</h3>
       <div class="table-actions">
-        <button pButton icon="pi pi-inbox" label="Empty"></button>
-        <button pButton icon="pi pi-plus" label="New Box"></button>
+         <button pButton icon="pi pi-trash" label="Dobozok törlése" (click)="deleteBoxes()"></button>
+        <button pButton icon="pi pi-inbox" label="Empty" (click)="emptyBoxes()"></button>
+        <button pButton icon="pi pi-plus" label="New Box" routerLink="/boxes/new"></button>
       </div>
     </div>
 
     <p-table [value]="boxes" responsiveLayout="scroll">
        <ng-template pTemplate="header">
             <tr>
-              <th>Label</th>
-              <th>Contents</th>
-              <th>Capacity</th>
-              <th>Status</th>
-              <th>Location</th>
+              <th>Kód</th>
+              <th>Tartalom</th>
+              <th>Kapacitás</th>
+              <th>Státusz</th>
+              
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-box>
             <tr>
-              <td>{{ box.label }}</td>
+              <td>{{ box.code }}</td>
               <td>{{ box.items }} items</td>
+              
               <td>
-                <p-progressBar [value]="box.capacity"></p-progressBar>
-              </td>
-              <td>
+                
+                <span> <p-progressBar [value]="box.capacity"></p-progressBar></span>
                 <span class="capacity"
                   [ngClass]="{
                     low: box.capacity < 40,
                     medium: box.capacity >= 40 && box.capacity < 70,
                     high: box.capacity >= 70
                   }">
-                  {{ box.capacity }}%
+                  {{ box.capacity }}
+                  
+                  
                 </span>
               </td>
-              <td>{{ box.location }}</td>
+              <td>{{box.status}}</td>
+              
             </tr>
           </ng-template>
         </p-table>

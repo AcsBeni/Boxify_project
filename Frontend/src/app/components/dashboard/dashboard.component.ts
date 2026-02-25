@@ -6,7 +6,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { CommonModule } from '@angular/common';
 import { Box } from '../../interfaces/box';
 import { ChartModule } from 'primeng/chart';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
 import { Item } from '../../interfaces/item';
@@ -22,7 +22,9 @@ import { Item } from '../../interfaces/item';
     TableModule,
     ButtonModule,
     ProgressBarModule,
-    ChartModule],
+    ChartModule,
+    RouterLink
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -67,20 +69,39 @@ export class DashboardComponent implements OnInit {
       });
     }
 
+    //Box delete, item delete
+    deleteBoxes(){
+      if(confirm("Biztosan töröl minden dobozt?")){
+        this.api.deleteBoxes(this.auth.loggedUser().id).subscribe({
+        next: (res) => {
+         
+          console.log(res)
+        },
+        error: (err)=>{
+          console.log(err.error.error)
+        }
+      });
+      }
+      this.getBoxes()
+    }
+    emptyBoxes(){
+
+    }
+
 
     //Chart Renders---------------------------------------------------------------------------
    private initDoughnutChart() {
     const css = getComputedStyle(document.documentElement);
 
     this.data = {
-      labels: ['Tools', 'Electronics', 'Books'],
+      labels: ['Használt tárhely', 'Elérhető tárhely'],
       datasets: [
         {
-          data: [300, 120, 180],
+          data: [300, 120],
           backgroundColor: [
-            css.getPropertyValue('--sage'),
-            css.getPropertyValue('--moss'),
-            css.getPropertyValue('--sand')
+            css.getPropertyValue('--color-sage-green'),
+            css.getPropertyValue('--color-alabaster-grey'),
+           
           ]
         }
       ]

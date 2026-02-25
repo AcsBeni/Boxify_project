@@ -142,6 +142,7 @@ export class BoxesFormComponent implements OnInit {
       next: (res) => {
         
         console.log(res)
+        this.router.navigate(['/boxes']);
         
       },
       error: (err)=>{

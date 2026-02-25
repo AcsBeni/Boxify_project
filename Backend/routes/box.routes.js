@@ -166,7 +166,25 @@ router.delete('/:id',authenticate, async (req, res)=>{
     }
 });
 
+router.delete('/user/:userId',authenticate, async (req, res)=>{
+  
+    try{
+        const box = await Box.destroy({
+            where: {
+                userId: req.params.userId
+            }
+        })
+        if(box > 0){
+            res.status(200).json({message: "Boxes deleted"})
+        }else{
+            res.status(404).json({message: "Box not found"})
+        }
 
+    }
+     catch(e){
+        res.status(500).json({message: "Server error", error : e.message})
+    }
+});
 
 
 module.exports = router

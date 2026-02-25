@@ -60,6 +60,9 @@ export class ApiService {
   deleteBox(id:string){
     return this.http.delete(`${this.server}/boxes/${id}`, this.tokenHeader())
   }
+  deleteBoxes(id:string){
+    return this.http.delete(`${this.server}/boxes/user/${id}`, this.tokenHeader())
+  }
 
 
   //Items
