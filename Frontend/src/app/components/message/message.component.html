@@ -1,7 +1,7 @@
-<div class="card">
-    <p-message
-  [severity]="type"
-  [text]="text"
-  [styleClass]="'custom-message ' + type"></p-message>
+<div *ngIf="message" class="message-container">
+  <p-message 
+    [severity]="message.severity" 
+    [text]="message.title + ' - ' + message.message"
+    [styleClass]="'w-full'" closable>
+  </p-message>
 </div>
-

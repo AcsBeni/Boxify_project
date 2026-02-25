@@ -1,0 +1,295 @@
+:root {
+  --color-sage-green: #77966D;
+  --color-ebony: #626D58;
+  --color-golden-sand: #BDC667;
+  --color-brown-bark: #544343;
+  --color-alabaster-grey: #F9F9F9;
+  --color-tea-green: #C7D59F;
+  --color-yellow-green: #B7CE63;
+  --color-lime-moss: #8FB339;
+}
+
+/* ===== LIST VIEW ===== */
+.list-wrapper {
+  padding: 2rem;
+  background: var(--color-alabaster-grey);
+  min-height: calc(100vh - 90px);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 2rem;
+
+  h2 {
+    margin: 0;
+    color: var(--color-brown-bark);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    color: var(--color-ebony);
+  }
+}
+
+.create-btn {
+  background: var(--color-sage-green) !important;
+  border: none !important;
+  color: white !important;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--color-lime-moss) !important;
+  }
+}
+
+.list-card {
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+  padding: 0;
+  overflow: hidden;
+
+  :host ::ng-deep .p-card-body {
+    padding: 0;
+  }
+}
+
+/* ===== TABLE STYLES ===== */
+:host ::ng-deep .p-datatable {
+  .p-datatable-header {
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  .p-datatable-thead > tr > th {
+    background: #f5f5f5;
+    color: var(--color-ebony);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 1rem;
+    border: none;
+    border-bottom: 2px solid #e0e0e0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .p-datatable-tbody > tr {
+    border-bottom: 1px solid #f0f0f0;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    > td {
+      padding: 1rem;
+      color: var(--color-ebony);
+      font-size: 0.9rem;
+    }
+  }
+
+  .p-datatable-footer {
+    background: #f5f5f5;
+    border-top: 2px solid #e0e0e0;
+    border-bottom: none;
+    padding: 1rem;
+  }
+}
+
+.empty-message {
+  text-align: center;
+  padding: 2rem !important;
+  color: #999;
+  font-size: 0.95rem;
+
+  .create-link {
+    color: var(--color-sage-green);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--color-lime-moss);
+    }
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-btn {
+  color: var(--color-sage-green) !important;
+
+  &:hover:not(:disabled) {
+    color: var(--color-lime-moss) !important;
+  }
+}
+
+.delete-btn {
+  color: #dc3545 !important;
+
+  &:hover:not(:disabled) {
+    color: #c82333 !important;
+  }
+}
+
+/* ===== FORM VIEW ===== */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--color-alabaster-grey);
+  min-height: calc(100vh - 90px);
+}
+
+.form-card {
+  width: 100%;
+  max-width: 820px;
+  padding: 1.75rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+}
+
+.form-header {
+  margin-bottom: 1.5rem;
+
+  .title {
+    margin: 0;
+    color: var(--color-brown-bark);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    color: var(--color-ebony);
+  }
+}
+
+.form-section {
+  margin-bottom: 1.5rem;
+
+  .section-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-ebony);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+
+  &.full {
+    grid-template-columns: 1fr;
+  }
+
+  &.two {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &.three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    &.three,
+    &.two {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-ebony);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+}
+
+input[pInputText],
+textarea[pInputTextarea],
+.p-dropdown {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: border-color 200ms, box-shadow 200ms;
+
+  &:focus {
+    border-color: var(--color-sage-green);
+    box-shadow: 0 0 0 2px rgba(119, 150, 109, 0.1);
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+  }
+}
+
+textarea[pInputTextarea] {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eee;
+}
+
+.primary-btn {
+  background: var(--color-sage-green) !important;
+  border: none !important;
+  color: white !important;
+
+  &:hover:not(:disabled) {
+    background: var(--color-lime-moss) !important;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.secondary-btn {
+  background: var(--color-golden-sand) !important;
+  border: none !important;
+  color: white !important;
+
+  &:hover:not(:disabled) {
+    background: var(--color-yellow-green) !important;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+

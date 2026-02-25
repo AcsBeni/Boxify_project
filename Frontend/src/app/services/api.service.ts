@@ -88,5 +88,29 @@ export class ApiService {
     return this.http.delete(`${this.server}/items/${id}`, this.tokenHeader())
   }
 
+  // BOX ITEMS -----------------------------------------------------------------------
 
+  getBoxItems(){
+    return this.http.get(`${this.server}/box_items`, this.tokenHeader())
+  }
+
+  getBoxItemById(id: string){
+    return this.http.get(`${this.server}/box_items/${id}`, this.tokenHeader())
+  }
+
+  getBoxItemsByBoxId(boxId: string){
+    return this.http.get(`${this.server}/box_items/box/${boxId}`, this.tokenHeader())
+  }
+
+  insertBoxItem(data: object){
+    return this.http.post(`${this.server}/box_items`, data, this.tokenHeader())
+  }
+
+  updateBoxItem(id: string, data: object){
+    return this.http.patch(`${this.server}/box_items/${id}`, data, this.tokenHeader())
+  }
+
+  deleteBoxItem(id: string){
+    return this.http.delete(`${this.server}/box_items/${id}`, this.tokenHeader())
+  }
 }

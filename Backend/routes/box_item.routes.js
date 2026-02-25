@@ -55,60 +55,48 @@ router.get('/:field/:op/:value',authenticate, async (req, res)=>{
 router.post('/',authenticate, async (req, res)=>{
     try{
 
-        const {userId,
-            name,
-            description,
-            lengthCm,
-            widthCm,
-            heightCm,
-            maxWeightKg,
-            updatedAt,
-            createdAt} = req.body;
-        const Box_Item = await Box_Item.create({
-            userId,
-            name,
-            description,
-            lengthCm,
-            widthCm,
-            heightCm,
-            maxWeightKg,
-            updatedAt,
-            createdAt
+        const {boxId, itemId, quantity} = req.body;
+        const BoxItemRecord = await Box_Item.create({
+            boxId,
+            itemId,
+            quantity: quantity || 1
         })
-        res.status(201).json(Box_Item)
+        res.status(201).json(BoxItemRecord)
     }
      catch(e){
+        res.status(500).json({message: "Server error", error : e.message})
+    }
+});
+
+//get Box_Items by boxId
+router.get('/box/:boxId',authenticate, async (req, res)=>{
+    try{
+        const {boxId} = req.params;
+        const Box_Items = await Box_Item.findAll({
+            where: {
+                boxId: boxId
+            }
+        })
+        res.status(200).json(Box_Items)
+    }
+    catch(e){
         res.status(500).json({message: "Server error", error : e.message})
     }
 });
 router.patch('/:id',authenticate, async (req, res)=>{
     try{
 
-        const {userId,
-            name,
-            description,
-            lengthCm,
-            widthCm,
-            heightCm,
-            maxWeightKg,
-            updatedAt,
-            createdAt} = req.body;
-        const Box_Item = await Box_Item.update({
-            userId,
-            name,
-            description,
-            lengthCm,
-            widthCm,
-            heightCm,
-            maxWeightKg,
-            updatedAt,
-            createdAt
+        const {boxId, itemId, quantity} = req.body;
+        const BoxItemRecord = await Box_Item.update({
+            boxId,
+            itemId,
+            quantity
         }, {
             where: {
                 id: req.params.id
             }
         })
-        if(Box_Item[0] > 0){
+        if(BoxItemRecord[0] > 0){
             res.status(200).json({message: "Box_Item updated"})
         }else{
             res.status(404).json({message: "Box_Item not found"})
@@ -120,12 +108,12 @@ router.patch('/:id',authenticate, async (req, res)=>{
 });
 router.delete('/:id',authenticate, async (req, res)=>{
     try{
-        const Box_Item = await Box_Item.destroy({
+        const deletedCount = await Box_Item.destroy({
             where: {
                 id: req.params.id
             }
         })
-        if(Box_Item > 0){
+        if(deletedCount > 0){
             res.status(200).json({message: "Box_Item deleted"})
         }else{
             res.status(404).json({message: "Box_Item not found"})
