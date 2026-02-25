@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
       });
     }
 
-    //Box delete, item delete
+    //Box delete, item delete // TODO: DAShboard, message behelyezése, confirm update, itemek ellenőrzése a dobozhoz, capacity calc, keresés, guard, PASS ELLENŐRZÉS, dodboz kód ellenőrzés + generálás
     deleteBoxes(){
       if(confirm("Biztosan töröl minden dobozt?")){
         this.api.deleteBoxes(this.auth.loggedUser().id).subscribe({
