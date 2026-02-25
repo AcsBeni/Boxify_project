@@ -15,7 +15,7 @@ function generateToken(user) {
       role: user.role
     },
     ensureSecret(),
-    { expiresIn: '2h' }
+    { expiresIn: '7d' }
   );
 }
 
