@@ -20,49 +20,72 @@ const Box_Item = require('./box_item.model')(sequelize)
 const Item = require('./item.model')(sequelize)
 const AuthToken = require('./auth_token')(sequelize)
 
+/* =========================
+   USER RELATIONSHIPS
+========================= */
 
-
-//Connects
+// User → Boxes
 User.hasMany(Box, {
   foreignKey: 'userId',
   as: 'boxes',
   onDelete: 'CASCADE'
 });
+Box.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user'
+});
+
+// User → Items
 User.hasMany(Item, {
   foreignKey: 'userId',
   as: 'items',
   onDelete: 'CASCADE'
 });
+Item.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user'
+});
+
+// User → Auth Tokens
 User.hasMany(AuthToken, {
   foreignKey: 'userId',
-  as: 'auth_tokens',
+  as: 'authTokens',
   onDelete: 'CASCADE'
 });
-    //USER
-    Box.belongsTo(User, {
-    foreignKey: 'userId',
-    as: 'users'
-    });
+AuthToken.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user'
+});
 
-    Item.belongsTo(User, {
-    foreignKey: 'userId',
-    as: 'users'
-    });
-    AuthToken.belongsTo(User, {
-    foreignKey: 'userId',
-    as: 'users'
-    });
-    //BOX
-    Box_Item.belongsTo(Box, {
-    foreignKey: 'boxId',
-    as: 'boxes'
-    });
+/* =========================
+   BOX / ITEM RELATIONSHIPS
+========================= */
 
-    //Items
-    Box_Item.belongsTo(Item, {
-    foreignKey: 'itemId',
-    as: 'items'
-    });
+// Box → Box_Items
+Box.hasMany(Box_Item, {
+  foreignKey: 'boxId',
+  as: 'box_Items',
+  onDelete: 'CASCADE'
+});
+Box_Item.belongsTo(Box, {
+  foreignKey: 'boxId',
+  as: 'box'
+});
+
+// Item → Box_Items
+Item.hasMany(Box_Item, {
+  foreignKey: 'itemId',
+  as: 'box_Items',
+  onDelete: 'CASCADE'
+});
+Box_Item.belongsTo(Item, {
+  foreignKey: 'itemId',
+  as: 'item'
+});
+
+/* =========================
+   OPERATORS
+========================= */
 
 const operatorMap = {
     eq: Op.eq,
