@@ -1,1 +1,84 @@
-<p>search works!</p>
+<div class="form-wrapper">
+  <p-card class="form-card">
+
+    <!-- ===== CÍM ===== -->
+    <div class="form-header">
+      <h2 class="title">Hol van ez a tárgy?</h2>
+      <span class="subtitle">
+        Tárgynév vagy doboz alapján kereshetsz, majd gyorsan navigálhatsz a helyhez
+      </span>
+    </div>
+
+    <!-- ===== KERESŐ MEZŐK ===== -->
+    <div class="form-section">
+      <h4 class="section-title">Keresési feltételek</h4>
+
+      <div class="grid two">
+        <div class="field">
+          <label>Tárgy neve</label>
+          <input
+            pInputText
+            [(ngModel)]="search.itemName"
+            placeholder="pl. téli kabát"
+          />
+        </div>
+
+       
+      </div>
+
+      <div class="form-actions">
+        <p-button
+          label="Keresés"
+          icon="pi pi-search"
+          (click)="searchItems()"
+          class="primary-btn">
+        </p-button>
+
+        <p-button
+          label="Mezők törlése"
+          icon="pi pi-times"
+          class="secondary-btn"
+          (click)="clearSearch()">
+        </p-button>
+      </div>
+    </div>
+
+    <!-- ===== TALÁLATOK ===== -->
+    <div class="form-section" *ngIf="results?.length">
+      <h4 class="section-title">Találatok</h4>
+
+      <div class="results-grid">
+        <p-card
+          class="result-card"
+          *ngFor="let r of results">
+
+          <div class="result-header">
+            <strong>{{ r.itemName }}</strong>
+          </div>
+
+          <div class="result-body">
+            <div><b>Tárgy:</b> {{r.name}}</div>
+            <div><b>Doboz:</b> {{ r.boxCode }}</div>
+            <div><b>Hely:</b> {{ r.location }}</div>
+            <div><b>Megjegyzés:</b> {{ r.note || '-' }}</div>
+          </div>
+
+          <div class="result-actions">
+            <p-button
+              label="Doboz megnyitása"
+              icon="pi pi-external-link"
+              (click)="goToPacking()">
+            </p-button>
+          </div>
+
+        </p-card>
+      </div>
+    </div>
+
+    <!-- ===== NINCS TALÁLAT ===== -->
+    <div *ngIf="results && !results.length" class="no-results">
+      Nincs találat a megadott feltételekkel.
+    </div>
+
+  </p-card>
+</div>

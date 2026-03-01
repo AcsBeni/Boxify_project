@@ -35,11 +35,11 @@
   </p-card>
 
   <!-- Chart 2 -->
-  <p-card class="card " >
-    <h4 class="card-title">Tárolóhely felhasználva</h4>
-    <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
-    <span class="muted-text">48% foglalt</span>
-  </p-card>
+  <p-card class="card">
+  <h4 class="card-title">Tárolóhely felhasználva</h4>
+  <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+  <span class="muted-text">{{ getUsedVolumePercentage() }}% foglalt</span>
+</p-card>
 
   <!-- Table (FULL WIDTH) -->
   <p-card class="card table-card">
@@ -47,7 +47,7 @@
       <h3>Dobozok</h3>
       <div class="table-actions">
          <button pButton icon="pi pi-trash" label="Dobozok törlése" (click)="deleteBoxes()"></button>
-        <button pButton icon="pi pi-inbox" label="Kiürítés" (click)="emptyBoxes()"></button>
+        
         <button pButton icon="pi pi-plus" label="Új doboz" routerLink="/boxes/new"></button>
       </div>
     </div>
@@ -90,41 +90,3 @@
     
   </p-card>
 
-</div>
-
-    <!-- RIGHT COLUMN -->
-    <div class="right-column">
-
-      <p-card class="card selected-box">
-        <h4 class="card-title">BOX-123456</h4>
-
-        <div class="box-preview">
-          <span class="box-id">Shelf A</span>
-          <span class="box-meta">6 items · 75kg</span>
-
-          <p-progressBar [value]="75"></p-progressBar>
-          <span class="capacity high">75% Full</span>
-        </div>
-
-        <div class="box-stats">
-          <div>
-            <small>Last Modified</small>
-            <strong>3%</strong>
-          </div>
-          <div>
-            <small>Space Remaining</small>
-            <strong>97%</strong>
-          </div>
-        </div>
-
-        <div class="box-actions">
-          <button pButton icon="pi pi-trash" label="Delete"></button>
-          <button pButton icon="pi pi-cog" label="Details"></button>
-        </div>
-      </p-card>
-
-    </div>
-
-  </section>
-
-</div>

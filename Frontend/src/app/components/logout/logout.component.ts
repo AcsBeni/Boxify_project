@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-logout',
@@ -13,11 +14,19 @@ export class LogoutComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService,
   ){}
 
   ngOnInit(): void {
-    this.auth.logout()
-    this.router.navigateByUrl("/login")
+    try{
+      this.auth.logout()
+      this.messageService.show('success', 'Success', 'Sikeres Kijelentkezés');
+      this.router.navigateByUrl("/login")
+    }
+    catch(err:any){
+      this.messageService.show('error', 'Error', err.error?.error || 'Sikertelen Kijelentkezés');
+    }
+    
   }
 }

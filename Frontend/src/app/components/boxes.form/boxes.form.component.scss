@@ -93,22 +93,3 @@ input[pInputText],
   gap: 0.75rem;
   margin-top: 1.25rem;
 }
-
-/* ===== BUTTONS ===== */
-.primary-btn {
-  background: var(--color-sage-green);
-  border: none;
-}
-
-.primary-btn:hover {
-  background: var(--color-lime-moss);
-}
-
-.secondary-btn {
-  background: var(--color-golden-sand);
-  border: none;
-}
-
-.secondary-btn:hover {
-  background: var(--color-yellow-green);
-}

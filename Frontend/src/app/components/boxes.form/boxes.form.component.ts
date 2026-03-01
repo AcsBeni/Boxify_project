@@ -76,9 +76,11 @@ export class BoxesFormComponent implements OnInit {
       error: (err)=>{
         console.log(err.error.error)
       }
-    });
+    }) 
 
 
+    }else{
+      this.box.code = this.generateBoxCode();
     }
     if(this.auth.isLoggedUser()){
       this.user = this.auth.loggedUser()
@@ -90,24 +92,6 @@ export class BoxesFormComponent implements OnInit {
       this.router.navigate(['/login']);
     }
     
-  }
-
-  /** empty model for /new */
-  private createEmptyBox(): Box {
-    return {
-      id: '',
-      userId: '',
-      code: '',
-      labelType: 'QR',
-      lengthCm: 0,
-      widthCm: 0,
-      heightCm: 0,
-      maxWeightKg: 0,
-      location: '',
-      note: '',
-      status: 'ACTIVE',
-      createdAt: new Date()
-    };
   }
 
   /** MOCK – replace with API */
@@ -162,5 +146,9 @@ export class BoxesFormComponent implements OnInit {
       }
     });
     this.router.navigate(['/boxes']);
+  }
+  private generateBoxCode(): string {
+    const random = Math.floor(10000 + Math.random() * 90000); 
+    return `BOX_${random}`;
   }
 }

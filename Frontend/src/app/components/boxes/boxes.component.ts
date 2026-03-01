@@ -12,6 +12,9 @@ import {ButtonModule } from "primeng/button";
 import { ApiService } from '../../services/api.service';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { MessageService } from '../../services/message.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-boxes',
@@ -24,17 +27,21 @@ import { AuthService } from '../../services/auth.service';
     InputTextModule,
     CardModule,
     ButtonModule,
-    RouterModule
+    RouterModule,
+    ConfirmDialogModule
 ],
   templateUrl: './boxes.component.html',
-  styleUrl: './boxes.component.scss'
+  styleUrl: './boxes.component.scss',
+  providers: [ConfirmationService]
 })
 export class BoxesComponent implements OnInit {
 
   constructor(
     private router:Router,
     private api: ApiService,
-    private auth: AuthService
+    private auth: AuthService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ){}
   searchTerm = '';
   dialogVisible = false;
@@ -73,56 +80,34 @@ export class BoxesComponent implements OnInit {
     this.api.getBoxByUserId(this.auth.loggedUser().id).subscribe({
       next: (res) => {
         this.boxes = res as Box[];
-        console.log(res)
       },
       error: (err)=>{
-        console.log(err.error.error)
+        this.messageService.show('error', 'Nem sikerült a dobozokat megtalálni', err.error?.error || 'Hiba történt a dobozok megtalálása közben');
       }
     });
   }
-  openBox(box: Box) {
-    this.selectedBox = box;
-    this.dialogVisible = true;
-
-    this.loadBoxItems(box.id);
-  }
-
-  delete(id:string){
-    if(confirm("Biztosan törli?")){
-      this.api.deleteBox(id).subscribe({
-        next: (res) => {
-          this.getBoxes()
-        },
-        error: (err)=>{
-          console.log(err.error.error)
-        }
-    });
-    }
-  }
-
-  loadBoxItems(boxId: string) {
-    this.boxItems = [
-      {
-        id: 'i1',
-        userId: 'u1',
-        name: 'Hammer',
-        description: 'Steel hammer',
-        lengthCm: 30,
-        widthCm: 10,
-        heightCm: 4,
-        maxWeightKg: 1.2,
-        createdAt: new Date()
-      },
-      {
-        id: 'i2',
-        userId: 'u1',
-        name: 'Screwdriver',
-        lengthCm: 25,
-        widthCm: 3,
-        heightCm: 3,
-        maxWeightKg: 0.4,
-        createdAt: new Date()
+ 
+  delete(id:string, code:string){
+    
+    this.confirmationService.confirm({
+      message: `Biztosan törli ezt a dobozt?: "${code}"?`,
+      header: 'Megerősítés',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        
+        this.api.deleteBox(id).subscribe({
+          next: () => {
+            this.messageService.show('success', 'Success!', 'A dobozt sikeresen törölte');
+           
+            this.getBoxes();
+          },
+          error: (err: any) => {
+            this.messageService.show('error', 'Nem sikerült törölni a dobozt', err.error?.error || 'Hiba történt a doboz kitörlése közben');
+          
+          }
+        });
       }
-    ];
+    });
   }
+
 }

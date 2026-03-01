@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
+import { MessageService } from '../../services/message.service';
 
 
 
@@ -36,7 +37,8 @@ export class LoginComponent {
   constructor(
      private api: ApiService,
       private auth: AuthService,
-     private router: Router
+     private router: Router,
+     private messageService: MessageService,
   ){}
 
   keepLoggedIn: boolean =false;
@@ -56,7 +58,7 @@ export class LoginComponent {
       password: this.user.password
     }
     if(!data.email || !data.password){
-      alert("Hiányzó adatok")
+      this.messageService.show('warn', 'Warning', 'Hiányzó adatok!');
       return
     }
     this.api.login('auth', data).subscribe({
@@ -67,12 +69,12 @@ export class LoginComponent {
           
         }
         
-        
+        this.messageService.show('success', 'Success', 'Sikeres Bejelentkezés');
         this.router.navigateByUrl('/dashboard');
       },
       error: (err)=>{
-        console.log(err);
-        alert(err.error.error);
+       
+        this.messageService.show('error', 'Error', err.error?.error || 'Sikertelen bejelentkezés');
       }
     });
   }

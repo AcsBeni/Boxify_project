@@ -28,8 +28,10 @@
   <p-table
     [value]="filteredBoxes"
     dataKey="id"
+    [paginator]="true"
+    [rows]="10"
     selectionMode="single"
-    (onRowSelect)="openBox($event.data)"
+    
     responsiveLayout="scroll"
     styleClass="boxes-table">
 
@@ -74,10 +76,10 @@
             class="delete-btn"
             severity="danger"
             rounded
-            (onClick)="delete(box.id); $event.stopPropagation()" />
+            (onClick)="delete(box.id, box.code);" />
         </td>
       </tr>
     </ng-template>
-
   </p-table>
+  <p-confirmDialog></p-confirmDialog>
 </p-card>

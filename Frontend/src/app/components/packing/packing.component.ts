@@ -38,6 +38,7 @@ export class PackingComponent implements OnInit {
   boxes: Box[] = [];
   items: Item[] = [];
   boxItems: BoxItem[] = [];
+  recommendedItems: Item[] = [];
   boxQRCodes: { [key: string]: string } = {};
   isLoading = false;
 
@@ -122,40 +123,93 @@ export class PackingComponent implements OnInit {
   }
 
   openAddDialog(box: Box): void {
-    this.selectedBox = box;
-    this.selectedItem = undefined;
-    this.quantity = 1;
-    this.showAddDialog = true;
-  }
+  this.selectedBox = box;
+  this.selectedItem = undefined;
+  this.quantity = 1;
+
+  
+  this.calculateRecommendedItems(box);
+
+  this.showAddDialog = true;
+}
 
   addItemToBox(): void {
-    if (!this.selectedBox || !this.selectedItem) {
-      this.messageService.show('error', 'Error', 'Please select an item');
-      return;
-    }
-
-    const boxItem: BoxItem = {
-      id: '',
-      boxId: this.selectedBox.id,
-      itemId: this.selectedItem.id,
-      quantity: this.quantity,
-      createdAt: new Date()
-    };
-
-    this.isLoading = true;
-    this.api.insertBoxItem(boxItem).subscribe({
-      next: () => {
-        this.messageService.show('success', 'Success', 'Item added to box');
-        this.showAddDialog = false;
-        this.loadData();
-      },
-      error: (err: any) => {
-        this.messageService.show('error', 'Error', err.error?.error || 'Failed to add item');
-        this.isLoading = false;
-      }
-    });
+  if (!this.selectedBox || !this.selectedItem) {
+    this.messageService.show('error', 'Error', 'Please select an item');
+    return;
   }
 
+  const box = this.selectedBox;
+  const item = this.selectedItem;
+
+  // ❌ 1. Fizikai méret check (egy darabnak is bele kell férnie)
+  if (
+    Number(item.lengthCm) > Number(box.lengthCm) ||
+    Number(item.widthCm) > Number(box.widthCm) ||
+    Number(item.heightCm) > Number(box.heightCm)
+  ) {
+    this.messageService.show(
+      'error',
+      'Too large',
+      'Item dimensions exceed the box dimensions'
+    );
+    return;
+  }
+
+  // ❌ 2. Súly check (már benne lévőkkel együtt)
+  const currentWeight = this.getCurrentBoxWeight(box.id);
+  const addedWeight = Number(item.maxWeightKg) * this.quantity;
+  const newWeight = currentWeight + addedWeight;
+
+  if (newWeight > Number(box.maxWeightKg)) {
+    this.messageService.show(
+      'error',
+      'Too heavy',
+      'Total weight would exceed box capacity'
+    );
+    return;
+  }
+
+  // ❌ 3. Térfogat check (már benne lévőkkel együtt)
+  const currentVolume = this.getCurrentBoxVolume(box.id);
+  const addedVolume = this.getItemVolume(item, this.quantity);
+  const boxVolume = this.getBoxVolume(box);
+
+  if (currentVolume + addedVolume > boxVolume) {
+    this.messageService.show(
+      'error',
+      'No space left',
+      'Total volume would exceed box capacity'
+    );
+    return;
+  }
+
+  // ✅ Ha minden oké → mentés
+  const boxItem: BoxItem = {
+    id: '',
+    boxId: box.id,
+    itemId: item.id,
+    quantity: this.quantity,
+    createdAt: new Date()
+  };
+
+  this.isLoading = true;
+  this.api.insertBoxItem(boxItem).subscribe({
+    next: () => {
+      this.messageService.show('success', 'Success', 'Item added to box');
+      this.showAddDialog = false;
+      this.loadData();
+    },
+    error: (err: any) => {
+      this.messageService.show(
+        'error',
+        'Error',
+        err.error?.error || 'Failed to add item'
+      );
+      this.isLoading = false;
+    }
+  });
+}
   deleteBoxItem(boxItem: BoxItem): void {
     const item = this.getItemDetails(boxItem.itemId);
     const itemName = item?.name || 'this item';
@@ -179,4 +233,91 @@ export class PackingComponent implements OnInit {
       }
     });
   }
+  // ===== SÚLY SZÁMÍTÁS =====
+private getCurrentBoxWeight(boxId: string): number {
+  const itemsInBox = this.getBoxItems(boxId);
+
+  let total = 0;
+
+  for (const bi of itemsInBox) {
+    const item = this.getItemDetails(bi.itemId);
+    if (item) {
+      total += Number(item.maxWeightKg) * bi.quantity;
+    }
+  }
+
+  return total;
+}
+
+// ===== TÉRFOGAT SZÁMÍTÁS =====
+private getCurrentBoxVolume(boxId: string): number {
+  const itemsInBox = this.getBoxItems(boxId);
+
+  let total = 0;
+
+  for (const bi of itemsInBox) {
+    const item = this.getItemDetails(bi.itemId);
+    if (item) {
+      const volume =
+        Number(item.lengthCm) *
+        Number(item.widthCm) *
+        Number(item.heightCm);
+
+      total += volume * bi.quantity;
+    }
+  }
+
+  return total;
+}
+
+private getItemVolume(item: Item, quantity: number): number {
+  const volume =
+    Number(item.lengthCm) *
+    Number(item.widthCm) *
+    Number(item.heightCm);
+
+  return volume * quantity;
+}
+
+private getBoxVolume(box: Box): number {
+  return (
+    Number(box.lengthCm) *
+    Number(box.widthCm) *
+    Number(box.heightCm)
+  );
+}
+private calculateRecommendedItems(box: Box): void {
+  const currentWeight = this.getCurrentBoxWeight(box.id);
+  const currentVolume = this.getCurrentBoxVolume(box.id);
+  const boxVolume = this.getBoxVolume(box);
+
+  this.recommendedItems = this.items.filter(item => {
+    
+    if (
+      Number(item.lengthCm) > Number(box.lengthCm) ||
+      Number(item.widthCm) > Number(box.widthCm) ||
+      Number(item.heightCm) > Number(box.heightCm)
+    ) {
+      return false;
+    }
+
+   
+    const newWeight = currentWeight + Number(item.maxWeightKg);
+    if (newWeight > Number(box.maxWeightKg)) {
+      return false;
+    }
+
+    
+    const itemVolume =
+      Number(item.lengthCm) *
+      Number(item.widthCm) *
+      Number(item.heightCm);
+
+    if (currentVolume + itemVolume > boxVolume) {
+      return false;
+    }
+
+    return true;
+  });
+}
 }

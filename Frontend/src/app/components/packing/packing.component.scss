@@ -323,25 +323,15 @@
 }
 
 .primary-btn {
-  background: var(--color-sage-green) !important;
+  
   border: none !important;
   color: white !important;
 
-  &:hover:not(:disabled) {
-    background: var(--color-lime-moss) !important;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-  }
 }
 
 .secondary-btn {
-  background: var(--color-golden-sand) !important;
+  
   border: none !important;
   color: white !important;
 
-  &:hover:not(:disabled) {
-    background: var(--color-yellow-green) !important;
-  }
 }

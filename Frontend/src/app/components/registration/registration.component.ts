@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { User } from '../../interfaces/user';
 import { ApiService } from '../../services/api.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-registration',
@@ -31,7 +32,8 @@ import { ApiService } from '../../services/api.service';
 export class RegistrationComponent {
   constructor(
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService,
   ){}
 
   user:User={
@@ -49,12 +51,12 @@ export class RegistrationComponent {
     this.api.registration('auth', this.user).subscribe({
       
       next: (res)=>{
-        alert('Sikeres regisztráció! Bejelentkezhetsz!');
+        this.messageService.show('success', 'Success', 'Sikeres regisztráció');
         this.router.navigateByUrl('/login');
       },
       error: (err)=>{
-        console.log(err);
-        alert(err.error.error);
+       
+         this.messageService.show('error', 'Error', err.error?.error || 'Hiba történt regisztráció közben');
       }
     });
 
