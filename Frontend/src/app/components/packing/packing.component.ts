@@ -142,7 +142,7 @@ export class PackingComponent implements OnInit {
   const box = this.selectedBox;
   const item = this.selectedItem;
 
-  // ❌ 1. Fizikai méret check (egy darabnak is bele kell férnie)
+  //Fizikai méret check (egy darabnak is bele kell férnie)
   if (
     Number(item.lengthCm) > Number(box.lengthCm) ||
     Number(item.widthCm) > Number(box.widthCm) ||
@@ -156,7 +156,7 @@ export class PackingComponent implements OnInit {
     return;
   }
 
-  // ❌ 2. Súly check (már benne lévőkkel együtt)
+  //Súly check (már benne lévőkkel együtt)
   const currentWeight = this.getCurrentBoxWeight(box.id);
   const addedWeight = Number(item.maxWeightKg) * this.quantity;
   const newWeight = currentWeight + addedWeight;
@@ -170,7 +170,7 @@ export class PackingComponent implements OnInit {
     return;
   }
 
-  // ❌ 3. Térfogat check (már benne lévőkkel együtt)
+  // 3. Térfogat check (már benne lévőkkel együtt)
   const currentVolume = this.getCurrentBoxVolume(box.id);
   const addedVolume = this.getItemVolume(item, this.quantity);
   const boxVolume = this.getBoxVolume(box);
@@ -184,7 +184,7 @@ export class PackingComponent implements OnInit {
     return;
   }
 
-  // ✅ Ha minden oké → mentés
+
   const boxItem: BoxItem = {
     id: '',
     boxId: box.id,

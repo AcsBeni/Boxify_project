@@ -8,17 +8,17 @@
     </p-card>
 
     <p-card class="kpi-card">
-      <span class="kpi-value">7</span>
+      <span class="kpi-value">>{{ getEmptyBoxCount() }}</span>
       <span class="kpi-label">Üres dobozok</span>
     </p-card>
 
     <p-card class="kpi-card">
-      <span class="kpi-value">87%</span>
+      <span class="kpi-value">{{ getMaxCapacity() }}%</span>
       <span class="kpi-label">Legtelítettebb</span>
     </p-card>
 
     <p-card class="kpi-card">
-      <span class="kpi-value">4</span>
+      <span class="kpi-value">{{ getUniqueItemCount() }}</span>
       <span class="kpi-label">Egyedi tárgyak</span>
     </p-card>
   </section>
@@ -29,18 +29,22 @@
     <div class="left-column">
 
   <!-- Chart 1 -->
-  <p-card class="card ">
-    <h4 class="card-title">Dobozok tárolóhelye</h4>
+  <p-card class="card chart-card">
+  <h4 class="card-title">Dobozok tárolóhelye</h4>
+  <div class="chart-wrapper">
     <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
-  </p-card>
-
-  <!-- Chart 2 -->
-  <p-card class="card">
-  <h4 class="card-title">Tárolóhely felhasználva</h4>
-  <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
-  <span class="muted-text">{{ getUsedVolumePercentage() }}% foglalt</span>
+  </div>
 </p-card>
 
+  <!-- Chart 2 -->
+ 
+<p-card class="card chart-card">
+  <h4 class="card-title">Tárolóhely felhasználva</h4>
+  <div class="chart-wrapper">
+    <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+  </div>
+  <span class="muted-text">{{ getUsedVolumePercentage() }}% foglalt</span>
+</p-card>
   <!-- Table (FULL WIDTH) -->
   <p-card class="card table-card">
     <div class="table-header">
@@ -69,17 +73,8 @@
               <td>{{ box.items }} items</td>
               
               <td>
-                
-                <span> <p-progressBar [value]="box.capacity"></p-progressBar></span>
-                <span class="capacity"
-                  [ngClass]="{
-                    low: box.capacity < 40,
-                    medium: box.capacity >= 40 && box.capacity < 70,
-                    high: box.capacity >= 70
-                  }">
-                  {{ box.capacity }}
-                  
-                  
+                <span> 
+                  <p-progressBar [value]="box.capacity"></p-progressBar>
                 </span>
               </td>
               <td>{{box.status}}</td>

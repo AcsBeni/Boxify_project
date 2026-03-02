@@ -11,6 +11,7 @@ import { Box } from '../../interfaces/box';
 import { User } from '../../interfaces/user';
 import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-boxes.form',
   standalone: true,
@@ -57,7 +58,8 @@ export class BoxesFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
-    private api: ApiService
+    private api: ApiService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -74,7 +76,7 @@ export class BoxesFormComponent implements OnInit {
        
       },
       error: (err)=>{
-        console.log(err.error.error)
+        this.messageService.show('error', 'Nem sikerült betölteni a dobozt', err.error?.error || 'Hiba történt a doboz betöltése közben');
       }
     }) 
 
@@ -113,7 +115,10 @@ export class BoxesFormComponent implements OnInit {
   }
 
   save() {
-   
+    if(!this.box.lengthCm || !this.box.code || !this.box.heightCm || !this.box.maxWeightKg || !this.box.widthCm){
+        this.messageService.show('warn', 'Hiba!', 'Kérem töltsön ki minden adatot!');
+        return
+    }
     if (this.isEditMode) {
       this.updateBox();
     } else {
@@ -125,12 +130,12 @@ export class BoxesFormComponent implements OnInit {
     this.api.insertBox(this.box).subscribe({
       next: (res) => {
         
-        console.log(res)
+        this.messageService.show('success', 'Success!', 'A dobozt sikeresen létrehoztuk!');
         this.router.navigate(['/boxes']);
         
       },
       error: (err)=>{
-        console.log(err.error.error)
+        this.messageService.show('error', 'Nem sikerült létrehozni a dobozt', err.error?.error || 'Hiba történt a doboz létrehozása közben');
       }
     });
   }
@@ -139,10 +144,10 @@ export class BoxesFormComponent implements OnInit {
     this.api.updateBox(this.boxId!,this.box!).subscribe({
       next: (res) => {
        
-        console.log(res)
+        this.messageService.show('success', 'Success!', 'A dobozt sikeresen frissítettük');
       },
       error: (err)=>{
-        console.log(err.error.error)
+         this.messageService.show('error', 'Nem sikerült frissíteni a dobozt', err.error?.error || 'Hiba történt a doboz frissítése közben');
       }
     });
     this.router.navigate(['/boxes']);

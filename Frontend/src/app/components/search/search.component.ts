@@ -8,6 +8,7 @@ import { ApiService } from '../../services/api.service';
 import { firstValueFrom } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from '../../services/message.service';
+import { Box } from '../../interfaces/box';
 
 @Component({
   selector: 'app-search',
@@ -30,6 +31,7 @@ export class SearchComponent {
   ) {}
 
   results: any[] = [];
+  box: Box[]= []
   isLoading = false;
 
   search = {
@@ -47,7 +49,7 @@ export class SearchComponent {
       return;
     }
 
-    // 1️⃣ Keresés az items táblában névre illeszkedően
+    // 1️⃣ Tárgyak keresése
     const items = await firstValueFrom(
       this.api.getItemByField('name', 'lk', searchTerm)
     ) as any[];
@@ -57,46 +59,65 @@ export class SearchComponent {
       return;
     }
 
-    const enrichedResults: any[] = [];
+    // 2️⃣ Összes box_item kapcsolat
+    const allBoxItems = await firstValueFrom(
+      this.api.getBoxItems()
+    ) as any[];
 
-    // 2️⃣ Minden tárgyhoz nézzük meg a box_item kapcsolatot
+    const results: any[] = [];
+
     for (const item of items) {
-      const boxItems = await firstValueFrom(
-        this.api.getBoxItemsByBoxId(item.id) 
-      ) as any[];
 
-      // Ha nincs box_items, csak a tárgyat adjuk vissza
-      if (!boxItems.length) {
-        enrichedResults.push({
-          ...item,
+      const relatedBoxItems = allBoxItems.filter(
+        (bi: any) => bi.itemId === item.id
+      );
+
+      
+      if (!relatedBoxItems.length) {
+        results.push({
+          itemName: item.name,
+          name: item.name,
+          boxId: null,
           boxCode: '-',
           location: '-',
-          note: '-'
+          note: '-',
+          quantity: 0
         });
         continue;
       }
 
-      // 3️⃣ Minden kapcsolódó doboz lekérése
-      for (const bi of boxItems) {
-        const box = await firstValueFrom(this.api.getBoxById(bi.boxId)) as any;
-        enrichedResults.push({
-          ...item,
-          name: item.name,
-          boxId: box?.boxId || '-',
-          boxCode: box?.code || '-',
-          location: box?.location || '-',
-          note: box?.note || '-'
-        });
-      }
+     
+      const boxes = await Promise.all(
+        relatedBoxItems.map((bi: any) =>
+          firstValueFrom(this.api.getBoxById(bi.boxId))
+        )
+      );
+
+     
+     relatedBoxItems.forEach((bi: any, index: number) => {
+
+      const box = boxes[index] as Box;
+
+      results.push({
+        itemName: item.name,
+        name: item.name,
+        boxId: box?.id || null,
+        boxCode: box?.code || '-',
+        location: box?.location || '-',
+        note: box?.note || '-',
+        quantity: bi.quantity || 1
+      });
+
+    });
     }
 
-    this.results = enrichedResults;
+    this.results = results;
 
   } catch (err: any) {
     this.messageService.show(
       'error',
       'Nem sikerült megtalálni a tárgyat',
-      err.error?.error || 'A tárgy keresése közben hiba történt'
+      err.error?.error || 'Hiba történt keresés közben'
     );
     this.results = [];
   } finally {

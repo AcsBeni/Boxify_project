@@ -34,6 +34,7 @@ export class DashboardComponent implements OnInit {
   boxes: Box[]=[];
   boxItems: BoxItem[]=[]
   items: Item[]=[];
+  
   data: any;
   basicData: any;
   basicOptions: any;
@@ -48,7 +49,8 @@ export class DashboardComponent implements OnInit {
         if(this.auth.isLoggedUser()){
           this.initDoughnutChart()
           this.initBarChart()
-          this.getBoxes()
+          this.getData()
+
         }
         else{
           this.router.navigate(['/login']);
@@ -58,25 +60,34 @@ export class DashboardComponent implements OnInit {
 
 
     //Data collection---------------------------------------------------------------------------
-   getBoxes() {
-  this.api.getBoxByUserId(this.auth.loggedUser().id).subscribe({
-    next: (res) => {
-      this.boxes = res as Box[];
+   async getData() {
+      try {
+        const userId = this.auth.loggedUser().id;
 
-      // Betöltjük a boxItems-t is
-      const boxItemPromises = this.boxes.map(box =>
-        this.api.getBoxItemsByBoxId(box.id).toPromise()
-      );
+        //  dobozok
+        this.boxes = (await this.api.getBoxByUserId(userId).toPromise()) as Box[];
 
-      Promise.all(boxItemPromises).then((boxItemsArrays: any) => {
-        this.boxItems = boxItemsArrays.flat();
-        this.initBarChart();       // diagram frissítése
-        this.initDoughnutChart();  // ha van doughnut chart is
-      });
-    },
-    error: (err) => console.log(err.error.error)
-  });
-}
+        // minden boxItem
+        const boxItemPromises = this.boxes.map(box =>
+          this.api.getBoxItemsByBoxId(box.id).toPromise()
+        );
+        const boxItemsArrays = await Promise.all(boxItemPromises);
+        this.boxItems = boxItemsArrays.flat() as BoxItem[];
+
+       
+        this.items = (await this.api.Items().toPromise()) as Item[];
+
+        // számolt mezők a táblához
+        this.attachBoxComputedFields();
+
+        // chart frissítés
+        this.initBarChart();
+        this.initDoughnutChart();
+
+      } catch (err: any) {
+        console.log(err);
+      }
+    }
 
     //Box delete, item delete // TODO: DAShboard, message behelyezése, confirm update, itemek ellenőrzése a dobozhoz, capacity calc, keresés, guard, PASS ELLENŐRZÉS, dodboz kód ellenőrzés + generálás
     deleteBoxes(){
@@ -91,7 +102,7 @@ export class DashboardComponent implements OnInit {
         }
       });
       }
-      this.getBoxes()
+      this.getData()
     }
    
 
@@ -116,6 +127,8 @@ export class DashboardComponent implements OnInit {
       };
 
       this.options = {
+        responsive: true,
+        aintainAspectRatio: false,
         cutout: '65%',
         plugins: {
           legend: { position: 'bottom' }
@@ -131,6 +144,7 @@ export class DashboardComponent implements OnInit {
 
   this.basicData = {
     labels: labels,
+    
     datasets: [
       {
         label: 'Foglaltság (%)',
@@ -141,7 +155,8 @@ export class DashboardComponent implements OnInit {
   };
 
   this.basicOptions = {
-    scales: {
+     responsive: true,
+       scales: {
       y: {
         beginAtZero: true,
         max: 100,
@@ -200,5 +215,43 @@ getUsedVolumePercentage(): number {
   if (totalVolume === 0) return 0;
   const usedVolume = this.getUsedBoxVolume();
   return Math.round((usedVolume / totalVolume) * 100);
+}
+private attachBoxComputedFields() {
+  this.boxes = this.boxes.map(box => {
+
+    const itemsInBox = this.boxItems.filter(bi => bi.boxId === box.id);
+
+    const itemCount = itemsInBox.reduce((sum, bi) => sum + bi.quantity, 0);
+
+    const capacity = this.getBoxUsedPercentage(box);
+
+    return {
+      ...box,
+      items: itemCount,
+      capacity: capacity
+    } as any;
+  });
+}
+getEmptyBoxCount(): number {
+  return this.boxes.filter(box =>
+    !this.boxItems.some(bi => bi.boxId === box.id)
+  ).length;
+}
+getMaxCapacity(): number {
+  if (!this.boxes.length || !this.boxItems.length) return 0;
+
+  let max = 0;
+
+  for (const box of this.boxes) {
+    const percent = this.getBoxUsedPercentage(box);
+    if (percent > max) max = percent;
+  }
+
+  return max;
+}
+
+getUniqueItemCount(): number {
+  const unique = new Set(this.boxItems.map(bi => bi.itemId));
+  return unique.size;
 }
 }
